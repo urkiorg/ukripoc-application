@@ -1,0 +1,19 @@
+{
+    "develop": {
+        "awscloudformation": {
+            "AuthRoleName": "ukripoc-application-develop-20190524142452-authRole",
+            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukripoc-application-develop-20190524142452-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukripoc-application-develop-20190524142452-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "ukripoc-application-develop-20190524142452-deployment",
+            "UnauthRoleName": "ukripoc-application-develop-20190524142452-unauthRole",
+            "StackName": "ukripoc-application-develop-20190524142452",
+            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukripoc-application-develop-20190524142452/50763820-7e27-11e9-9e31-0a0c5b3ce4f4"
+        },
+        "categories": {
+            "auth": {
+                "cognitoapplicants": {}
+            }
+        }
+    }
+}
