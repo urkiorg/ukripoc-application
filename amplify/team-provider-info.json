@@ -15,5 +15,22 @@
                 "cognitoapplicants": {}
             }
         }
+    },
+    "mattdev": {
+        "awscloudformation": {
+            "AuthRoleName": "ukripoc-application-mattdev-20190524170353-authRole",
+            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukripoc-application-mattdev-20190524170353-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukripoc-application-mattdev-20190524170353-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "ukripoc-application-mattdev-20190524170353-deployment",
+            "UnauthRoleName": "ukripoc-application-mattdev-20190524170353-unauthRole",
+            "StackName": "ukripoc-application-mattdev-20190524170353",
+            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukripoc-application-mattdev-20190524170353/87baec70-7e3d-11e9-b17f-02673541b8d0"
+        },
+        "categories": {
+            "auth": {
+                "cognitoapplicants": {}
+            }
+        }
     }
 }
