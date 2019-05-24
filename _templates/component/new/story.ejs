@@ -1,0 +1,11 @@
+---
+to: src/components/<%= h.inflection.undasherize(name) %>/<%= h.inflection.undasherize(name) %>.story.tsx
+---
+<% const comp = h.inflection.undasherize(name) -%>
+import React from "react";
+import { storiesOf } from "@storybook/react";
+import { <%= comp %> } from "./index";
+
+storiesOf("Components|<%= comp %>", module).add("Default", () => (
+    <<%= comp %>  />
+));

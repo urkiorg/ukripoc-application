@@ -1,0 +1,19 @@
+---
+to: src/components/<%= h.inflection.undasherize(name) %>/<%= h.inflection.undasherize(name) %>.tsx
+---
+<% const comp = h.inflection.undasherize(name) -%>
+import React, { FC, HTMLAttributes } from "react";
+import cx from "classnames";
+import styles from "./<%= comp %>.module.scss";
+
+interface Props extends HTMLAttributes<HTMLElement> {
+
+}
+
+export const <%= comp %>: FC<Props> = ({ ...props }) => (
+  <div {...props}>
+    {props.children}
+  </div>
+);
+
+export default <%= comp %>;
