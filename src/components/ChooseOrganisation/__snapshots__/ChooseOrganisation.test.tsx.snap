@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChooseOrganisation renders correctly 1`] = `
+<p>
+  Org 
+  <button
+    onClick={[Function]}
+  />
+</p>
+`;

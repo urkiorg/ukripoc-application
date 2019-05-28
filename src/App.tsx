@@ -17,6 +17,9 @@ import "ukripoc-components/fonts.scss";
 import { HubCallback } from "@aws-amplify/core/lib/Hub";
 import { ApplicationDashboard } from "./components/ApplicationDashboard";
 import { Route } from "./components/Route";
+import { LoginScreen } from "./components/LoginScreen";
+import { ApplyPage } from "./components/ApplyPage";
+import { CreateAccountPage } from "./components/CreateAccountPage";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -85,11 +88,17 @@ export const App: FC = (props: any) => {
             <UkriHeader user={user} routes={routes} />
             <Main>
                 <Authenticator authState="signIn" hideDefault={true}>
-                    <AuthController loggedIn={!!user}>
-                        <Router>
-                            <Route component={ApplicationDashboard} path="/" />
-                        </Router>
-                    </AuthController>
+                    <Router>
+                        <AuthController loggedIn={!!user} path="/">
+                            <ApplicationDashboard />
+                        </AuthController>
+                        <Route component={LoginScreen} path="/login" />
+                        <ApplyPage
+                            loggedIn={!!user}
+                            path="/apply/:opportunityId"
+                        />
+                        <CreateAccountPage path="/createaccount/*" />
+                    </Router>
                 </Authenticator>
             </Main>
             <UkriFooter />

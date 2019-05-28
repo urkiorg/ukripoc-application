@@ -3,6 +3,7 @@ import { ApplyPage } from "../ApplyPage";
 
 interface Props {
     loggedIn: boolean;
+    path?: string;
 }
 
 export const AuthController: FC<Props> = props => (

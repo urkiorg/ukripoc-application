@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateAccountPage renders correctly 1`] = `
+<span
+  className="sc-bdVaJa NUDvK"
+  size="XL"
+>
+  Create account
+</span>
+`;
