@@ -1,79 +1,81 @@
 {
-  "name": "ukripoc-application",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@reach/router": "^1.2.1",
-    "apollo-boost": "^0.3.1",
-    "apollo-client": "^2.5.1",
-    "aws-amplify": "^1.1.26",
-    "aws-appsync": "^1.7.2",
-    "aws-appsync-react": "^1.2.7",
-    "govuk-react": "^0.7.0",
-    "graphql": "^14.2.1",
-    "graphql-tag": "^2.10.1",
-    "react": "^16.8.6",
-    "react-apollo": "^2.5.5",
-    "react-apollo-hooks": "^0.4.5",
-    "react-dom": "^16.8.6",
-    "react-loading-skeleton": "^1.1.1",
-    "react-markdown": "^4.0.8",
-    "react-scripts": "3.0.0",
-    "styled-components": "^4.2.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@storybook/addon-actions": "^5.0.11",
-    "@storybook/addon-links": "^5.0.11",
-    "@storybook/addons": "^5.0.11",
-    "@storybook/react": "^5.0.11",
-    "@types/aws-lambda": "^8.10.25",
-    "@types/classnames": "^2.2.7",
-    "@types/jest": "^24.0.12",
-    "@types/node": "^12.0.0",
-    "@types/reach__router": "^1.2.4",
-    "@types/react": "^16.8.17",
-    "@types/react-dom": "^16.8.4",
-    "@types/react-test-renderer": "^16.8.1",
-    "@types/storybook__addon-actions": "^3.4.2",
-    "@types/storybook__react": "^4.0.1",
-    "@types/styled-components": "^4.1.15",
-    "babel-loader": "8.0.5",
-    "classnames": "^2.2.6",
-    "eslint": "^5.16.0",
-    "hygen": "^4.0.2",
-    "node-sass": "^4.12.0",
-    "react-test-renderer": "^16.8.6",
-    "typescript": "^3.4.5",
-    "typescript-json-schema": "^0.38.0"
-  },
-  "resolutions": {
-    "babel-jest": "24.7.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "new-component": "hygen component new --name ",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public -o dist/storybook",
-    "build-lambda": "cd ./amplify/backend/function/startapplication/src/ && npm run build",
-    "init-lambda": "cd ./amplify/backend/function/startapplication/src/ && npm install && npm run build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "ukripoc-application",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@reach/router": "^1.2.1",
+        "apollo-boost": "^0.3.1",
+        "apollo-client": "^2.5.1",
+        "aws-amplify": "^1.1.26",
+        "aws-amplify-react": "^2.3.8",
+        "aws-appsync": "^1.7.2",
+        "aws-appsync-react": "^1.2.7",
+        "govuk-react": "^0.7.0",
+        "graphql": "^14.2.1",
+        "graphql-tag": "^2.10.1",
+        "react": "^16.8.6",
+        "react-apollo": "^2.5.5",
+        "react-apollo-hooks": "^0.4.5",
+        "react-dom": "^16.8.6",
+        "react-loading-skeleton": "^1.1.1",
+        "react-markdown": "^4.0.8",
+        "react-scripts": "3.0.0",
+        "styled-components": "^4.2.0",
+        "ukripoc-components": "github:urkiorg/ukripoc-components"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.4.4",
+        "@storybook/addon-actions": "^5.0.11",
+        "@storybook/addon-links": "^5.0.11",
+        "@storybook/addons": "^5.0.11",
+        "@storybook/react": "^5.0.11",
+        "@types/aws-lambda": "^8.10.25",
+        "@types/classnames": "^2.2.7",
+        "@types/jest": "^24.0.12",
+        "@types/node": "^12.0.0",
+        "@types/reach__router": "^1.2.4",
+        "@types/react": "^16.8.17",
+        "@types/react-dom": "^16.8.4",
+        "@types/react-test-renderer": "^16.8.1",
+        "@types/storybook__addon-actions": "^3.4.2",
+        "@types/storybook__react": "^4.0.1",
+        "@types/styled-components": "^4.1.15",
+        "babel-loader": "8.0.5",
+        "classnames": "^2.2.6",
+        "eslint": "^5.16.0",
+        "hygen": "^4.0.2",
+        "node-sass": "^4.12.0",
+        "react-test-renderer": "^16.8.6",
+        "typescript": "^3.4.5",
+        "typescript-json-schema": "^0.38.0"
+    },
+    "resolutions": {
+        "babel-jest": "24.7.1"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "new-component": "hygen component new --name ",
+        "storybook": "start-storybook -p 9009 -s public",
+        "build-storybook": "build-storybook -s public -o dist/storybook",
+        "build-lambda": "cd ./amplify/backend/function/startapplication/src/ && npm run build",
+        "init-lambda": "cd ./amplify/backend/function/startapplication/src/ && npm install && npm run build"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }

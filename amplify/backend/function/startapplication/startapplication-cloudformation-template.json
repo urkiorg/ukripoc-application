@@ -59,8 +59,8 @@
 				"Runtime": "nodejs8.10",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "ukripoc-application-develop-20190524142452-deployment",
-					"S3Key": "amplify-builds/startapplication-1558706860-latest-build.zip"
+					"S3Bucket": "ukripoc-application-mattdev-20190524170353-deployment",
+					"S3Key": "amplify-builds/startapplication-1559045318-latest-build.zip"
 				}
 			}
 		},
