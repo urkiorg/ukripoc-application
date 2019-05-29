@@ -1,5 +1,5 @@
 import React, { FC, useState, useCallback, useEffect } from "react";
-import { RouteComponentProps, Redirect } from "@reach/router";
+import { RouteComponentProps } from "@reach/router";
 import { Router } from "@reach/router";
 import { ChooseOrganisation } from "../ChooseOrganisation";
 import { AccountDetails } from "../AccountDetails";

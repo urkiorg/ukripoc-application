@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, useCallback } from "react";
 import { RouteComponentProps, Link as RouterLink } from "@reach/router";
 import Caption from "@govuk-react/caption";
-import { Title } from "ukripoc-components";
+import { Title, ukriGreen } from "ukripoc-components";
 import Link from "@govuk-react/link";
 import BackLink from "@govuk-react/back-link";
 import Button from "@govuk-react/button";
@@ -84,7 +84,9 @@ export const ChooseOrganisation: FC<Props> = ({ onSetOrganisation }) => {
                 <Autocomplete source={lookup} onConfirm={onChoose} />
             )}
             {chosen && (
-                <Button onClick={confirmChoice}>Set organisation</Button>
+                <Button onClick={confirmChoice} buttonColour={ukriGreen}>
+                    Set organisation
+                </Button>
             )}
             <SectionBreak mb={9} />
         </>
