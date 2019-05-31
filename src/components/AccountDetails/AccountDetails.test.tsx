@@ -4,8 +4,11 @@ import { AccountDetails } from "./index";
 
 describe("AccountDetails", () => {
     it("renders correctly", () => {
-        const tree = renderer.create(<AccountDetails />).toJSON();
+        const tree = renderer
+            .create(
+                <AccountDetails organisation={{ ID: "foo", Name: "bar" }} />
+            )
+            .toJSON();
         expect(tree).toMatchSnapshot();
-    })
+    });
 });
-

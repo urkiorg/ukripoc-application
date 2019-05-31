@@ -26,7 +26,7 @@ export const MaybeAccount: FC<Props> = ({ ...props }) => (
                 <HintText>
                     Create a new account to start your application
                 </HintText>
-                <Link to="/createaccount">
+                <Link to="/createaccount/organisation">
                     <Button buttonColour={ukriGreen}>
                         Continue and create an account
                     </Button>

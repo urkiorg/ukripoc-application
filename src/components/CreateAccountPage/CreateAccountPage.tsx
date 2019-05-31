@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useEffect } from "react";
+import React, { FC, useState, useCallback } from "react";
 import { RouteComponentProps } from "@reach/router";
 import { Router } from "@reach/router";
 import { ChooseOrganisation } from "../ChooseOrganisation";
@@ -10,12 +10,6 @@ export const CreateAccountPage: FC<Props> = ({ navigate }) => {
     const [organisation, setOrganisation] = useState<Organisation | undefined>(
         undefined
     );
-
-    useEffect(() => {
-        if (organisation === undefined && navigate) {
-            navigate("organisation");
-        }
-    }, [organisation, navigate]);
 
     const onSetOrganisation = useCallback(
         (org: Organisation) => {

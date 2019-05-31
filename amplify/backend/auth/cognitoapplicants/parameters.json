@@ -7,13 +7,9 @@
     "openIdLambdaIAMPolicy": "cognitoapplicants_openid_lambda_iam_policy",
     "openIdLogPolicy": "cognitoapplicants_openid_lambda_log_policy",
     "userPoolName": "ukripoc_application_userpool",
-    "autoVerifiedAttributes": [
-        "email"
-    ],
+    "autoVerifiedAttributes": ["email"],
     "mfaConfiguration": "OFF",
-    "mfaTypes": [
-        "SMS Text Message"
-    ],
+    "mfaTypes": ["SMS Text Message"],
     "roleName": "cognitoapplicants_sns-role",
     "roleExternalId": "cognitoapplicants_role_external_id",
     "policyName": "cognitoapplicants-sns-policy",
@@ -24,20 +20,12 @@
     "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
-    "requiredAttributes": [
-        "email",
-        "name",
-        "phone_number"
-    ],
+    "requiredAttributes": ["email", "name", "phone_number"],
     "userpoolClientName": "cognitoapplicants_app_client",
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [
-        "email"
-    ],
-    "userpoolClientReadAttributes": [
-        "email"
-    ],
+    "userpoolClientWriteAttributes": ["email"],
+    "userpoolClientReadAttributes": ["email"],
     "mfaLambdaRole": "cognitoapplicants_totp_lambda_role",
     "mfaLambdaLogPolicy": "cognitoapplicants_totp_lambda_log_policy",
     "mfaPassRolePolicy": "cognitoapplicants_totp_pass_role_policy",
@@ -49,9 +37,7 @@
     "useDefault": "manual",
     "authSelections": "identityPoolAndUserPool",
     "resourceName": "cognitoapplicants",
-    "usernameAttributes": [
-        "email"
-    ],
+    "usernameAttributes": ["email"],
     "hostedUI": false,
     "authRoleName": {
         "Ref": "AuthRoleName"
@@ -60,15 +46,9 @@
         "Ref": "UnauthRoleName"
     },
     "authRoleArn": {
-        "Fn::GetAtt": [
-            "AuthRole",
-            "Arn"
-        ]
+        "Fn::GetAtt": ["AuthRole", "Arn"]
     },
     "unauthRoleArn": {
-        "Fn::GetAtt": [
-            "UnauthRole",
-            "Arn"
-        ]
+        "Fn::GetAtt": ["UnauthRole", "Arn"]
     }
 }

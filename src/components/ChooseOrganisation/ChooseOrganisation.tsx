@@ -5,6 +5,7 @@ import { Title, ukriGreen } from "ukripoc-components";
 import Link from "@govuk-react/link";
 import BackLink from "@govuk-react/back-link";
 import Button from "@govuk-react/button";
+import Label from "@govuk-react/label";
 import { Organisation } from "../../types";
 import Autocomplete from "accessible-autocomplete/react";
 import SectionBreak from "@govuk-react/section-break";
@@ -75,7 +76,7 @@ export const ChooseOrganisation: FC<Props> = ({ onSetOrganisation }) => {
             <p>{organisations && organisations.length}</p>
             {chosen ? (
                 <p>
-                    {chosen.Name}{" "}
+                    <Label>{chosen.Name} </Label>
                     <Link href="#" onClick={clearChoice}>
                         Change
                     </Link>
