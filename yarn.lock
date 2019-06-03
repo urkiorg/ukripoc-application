@@ -13858,8 +13858,8 @@ uglify-js@^3.1.4:
     source-map "~0.6.1"
 
 "ukripoc-components@github:urkiorg/ukripoc-components":
-  version "1.0.1"
-  resolved "https://codeload.github.com/urkiorg/ukripoc-components/tar.gz/33434687996b5f7a3c6d55c25dec022f5bd21d51"
+  version "1.0.2"
+  resolved "https://codeload.github.com/urkiorg/ukripoc-components/tar.gz/9425a107fa8663320c6d1798df097325a344bd6a"
   dependencies:
     "@aws-amplify/auth" "^1.2.24"
     "@govuk-react/constants" "^0.7.1"

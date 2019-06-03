@@ -1,7 +1,11 @@
-import React, { FC, HTMLAttributes } from "react";
+import React, { FC } from "react";
+import { RouteComponentProps } from "@reach/router";
 
-interface Props extends HTMLAttributes<HTMLElement> {}
+interface Props extends RouteComponentProps {}
 
-export const ApplicationDashboard: FC<Props> = () => <div>Dashboard</div>;
+export const ApplicationDashboard: FC<Props> = props => {
+    console.log(props);
+    return <div>Dashboard</div>;
+};
 
 export default ApplicationDashboard;

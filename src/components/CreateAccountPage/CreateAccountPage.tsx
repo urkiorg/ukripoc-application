@@ -4,9 +4,12 @@ import { Router } from "@reach/router";
 import { ChooseOrganisation } from "../ChooseOrganisation";
 import { AccountDetails } from "../AccountDetails";
 import { Organisation } from "../../types";
+import { AuthenticatorProps } from "../../lib/account";
 
-interface Props extends RouteComponentProps {}
-export const CreateAccountPage: FC<Props> = ({ navigate }) => {
+interface Props extends RouteComponentProps {
+    authProps?: AuthenticatorProps;
+}
+export const CreateAccountPage: FC<Props> = ({ navigate, authProps }) => {
     const [organisation, setOrganisation] = useState<Organisation | undefined>(
         undefined
     );
@@ -15,7 +18,7 @@ export const CreateAccountPage: FC<Props> = ({ navigate }) => {
         (org: Organisation) => {
             console.log({ navigate });
             setOrganisation(org);
-            navigate && navigate("./details");
+            navigate && navigate("/createaccount/details");
         },
         [setOrganisation, navigate]
     );
@@ -24,6 +27,7 @@ export const CreateAccountPage: FC<Props> = ({ navigate }) => {
         <>
             <Router>
                 <AccountDetails
+                    authProps={authProps}
                     default
                     path="details"
                     organisation={organisation}

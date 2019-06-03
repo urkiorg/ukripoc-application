@@ -4,22 +4,19 @@ import Auth, { CognitoUser } from "@aws-amplify/auth";
 import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
 import { ApolloProvider } from "react-apollo-hooks";
 import Main from "@govuk-react/main";
-import { Router } from "@reach/router";
 
 import config from "./aws-exports";
 import { UkriHeader, UkriFooter } from "ukripoc-components";
-import { AuthController } from "./components/AuthController";
 
 import { Authenticator } from "aws-amplify-react";
 
 import "ukripoc-components/fonts.scss";
 
 import { HubCallback } from "@aws-amplify/core/lib/Hub";
-import { ApplicationDashboard } from "./components/ApplicationDashboard";
-import { Route } from "./components/Route";
-import { LoginScreen } from "./components/LoginScreen";
-import { ApplyPage } from "./components/ApplyPage";
-import { CreateAccountPage } from "./components/CreateAccountPage";
+import { AuthWrapper } from "./components/AuthWrapper";
+import { stringType } from "aws-sdk/clients/iam";
+import { navigate } from "@reach/router";
+import { checkContact, isCognitoUser, UserType } from "./lib/account";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -47,58 +44,49 @@ Amplify.configure(config);
 // retrieve temporary AWS credentials and sign requests
 Auth.configure(config);
 
-export const App: FC = (props: any) => {
+export const App: FC = () => {
     const [user, setUser] = useState<CognitoUser | undefined>(undefined);
 
     useEffect(() => {
         const checkAuthenticatedUser = async () => {
             try {
                 const u = await Auth.currentAuthenticatedUser();
-                console.log("user", user);
+                console.log("user", u);
                 setUser(u);
-            } catch {
+            } catch (e) {
+                console.warn("user err", e);
                 setUser(undefined);
             }
         };
         checkAuthenticatedUser();
-    });
-    const handleAuthStateChange: HubCallback = useCallback(
-        async data => {
-            const state = data.payload.event;
+    }, []);
 
-            console.log("state", state);
-            if (state === "signedIn" || state === "signIn") {
-                const u = await Auth.currentAuthenticatedUser();
-                setUser(u);
+    const handleStateChange = useCallback(
+        (state: stringType, user?: UserType) => {
+            console.log("NEW STATE", state, user);
+            if (state === "confirmSignUp") {
+                navigate("/confirm");
+            }
+            if (!user || isCognitoUser(user)) {
+                console.log("setting user", user);
+                setUser(user);
             } else {
-                setUser(undefined);
+                console.log("not a user", user);
             }
         },
         [setUser]
     );
-
-    useEffect(() => {
-        Hub.listen("auth", handleAuthStateChange);
-        return () => Hub.remove("auth", handleAuthStateChange);
-    }, [handleAuthStateChange]);
 
     return (
         // See https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166 for why we need to coerce to any
         <ApolloProvider client={client as any}>
             <UkriHeader user={user} routes={routes} />
             <Main>
-                <Authenticator authState="signIn" hideDefault={true}>
-                    <Router>
-                        <AuthController loggedIn={!!user} path="/">
-                            <ApplicationDashboard />
-                        </AuthController>
-                        <Route component={LoginScreen} path="/login" />
-                        <ApplyPage
-                            loggedIn={!!user}
-                            path="/apply/:opportunityId"
-                        />
-                        <CreateAccountPage path="/createaccount/*" />
-                    </Router>
+                <Authenticator
+                    hideDefault={true}
+                    onStateChange={handleStateChange}
+                >
+                    <AuthWrapper />
                 </Authenticator>
             </Main>
             <UkriFooter />

@@ -4,8 +4,6 @@ import { LoginScreen } from "./index";
 
 describe("LoginScreen", () =>
     it("renders correctly", () => {
-        const tree = renderer
-            .create(<LoginScreen />)
-            .toJSON();
+        const tree = renderer.create(<LoginScreen authProps={{}} />).toJSON();
         expect(tree).toMatchSnapshot();
     }));

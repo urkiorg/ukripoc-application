@@ -22,9 +22,10 @@ import { useFormState } from "react-use-form-state";
 import FormGroup from "@govuk-react/form-group";
 import Button from "@govuk-react/button";
 import styled from "styled-components";
-import { createAccount } from "../../lib/account";
+import { createAccount, AuthenticatorProps } from "../../lib/account";
 interface Props extends RouteComponentProps {
     organisation?: Organisation;
+    authProps?: AuthenticatorProps;
 }
 
 const ShowButton = styled(A)`
@@ -53,9 +54,13 @@ const handleErrorClick = (target: string) => {
     }
 };
 
-export const AccountDetails: FC<Props> = ({ organisation, navigate }) => {
+export const AccountDetails: FC<Props> = ({
+    organisation,
+    navigate,
+    authProps
+}) => {
     if (organisation === undefined && navigate) {
-        navigate("../organisation");
+        navigate("/createaccount/organisation");
     }
 
     const [, pwnedCount, passProps] = usePwnedPasswords();
@@ -116,11 +121,26 @@ export const AccountDetails: FC<Props> = ({ organisation, navigate }) => {
                     organisation
                 });
                 console.log(result);
+                if (
+                    !result.userConfirmed &&
+                    authProps &&
+                    authProps.onStateChange &&
+                    navigate
+                ) {
+                    authProps.onStateChange("confirmSignUp", result.user);
+                    navigate("/confirm");
+                }
             } catch (err) {
+                setValidationErrors([
+                    {
+                        text: err.message,
+                        targetName: "email"
+                    }
+                ]);
                 console.warn(err);
             }
         },
-        [validateForm, formState, organisation]
+        [validateForm, formState, organisation, navigate, authProps]
     );
 
     const checkPhone = useCallback(
@@ -129,7 +149,7 @@ export const AccountDetails: FC<Props> = ({ organisation, navigate }) => {
                 event && event.currentTarget && event.currentTarget.value;
 
             const { parsePhoneNumberFromString } = await import(
-                /* webpackChunkName: libphone */ "libphonenumber-js"
+                /* webpackChunkName: "libphone" */ "libphonenumber-js"
             );
 
             if (!value) {
@@ -156,7 +176,6 @@ export const AccountDetails: FC<Props> = ({ organisation, navigate }) => {
             {organisation && (
                 <HintText>Your organisation: {organisation.Name}</HintText>
             )}
-            <p>{JSON.stringify(formState)}</p>
             {!!validationErrors.length && (
                 <ErrorSummary
                     errors={validationErrors}

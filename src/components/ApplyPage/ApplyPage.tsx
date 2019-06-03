@@ -3,13 +3,19 @@ import Caption from "@govuk-react/caption";
 
 import { RouteComponentProps } from "@reach/router";
 import { MaybeAccount } from "../MaybeAccount";
+import { AuthenticatorProps } from "../../lib/account";
 
 interface Props extends RouteComponentProps {
     loggedIn?: boolean;
     opportunityId?: string;
+    authProps?: AuthenticatorProps;
 }
 
-export const ApplyPage: FC<Props> = ({ loggedIn, opportunityId }) => {
+export const ApplyPage: FC<Props> = ({
+    loggedIn,
+    opportunityId,
+    authProps
+}) => {
     useEffect(() => {
         if (opportunityId) {
             window.localStorage.setItem("opportunityId", opportunityId);
@@ -18,7 +24,7 @@ export const ApplyPage: FC<Props> = ({ loggedIn, opportunityId }) => {
     return (
         <>
             <Caption>Start new application</Caption>
-            <MaybeAccount />
+            <MaybeAccount authProps={authProps} />
         </>
     );
 };
