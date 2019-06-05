@@ -1,32 +1,23 @@
-# type Task
-#   @model
-#   @auth(
-#     rules: [
-#       {
-#         allow: groups
-#         groups: ["Managers"]
-#         queries: null
-#         mutations: [create, update, delete]
-#       }
-#       {
-#         allow: groups
-#         groups: ["Employees"]
-#         queries: [get, list]
-#         mutations: null
-#       }
-#     ]
-#   ) {
-#   id: ID!
-#   title: String!
-#   description: String
-#   status: String
-# }
-# type PrivateNote @model @auth(rules: [{ allow: owner }]) {
-#   id: ID!
-#   content: String!
-# }
+type FundingApplication @model {
+    id: ID!
+    opportunityName: String!
+    opportunityDescription: String
+    opportunityFunders: [String]
+    openDate: String
+    closeDate: String
+    fundingApplicationQuestions: [FundingApplicationQuestion]
+        @connection(name: "FundingApplicationQuestion")
+}
 
-type Application @model {
-  id: ID!
-  name: String!
+type FundingApplicationQuestion @model {
+    id: ID!
+    heading: String
+    title: String
+    subtitle: String
+    notes: String
+    wordLimit: Int
+    fundingApplication: FundingApplication
+        @connection(name: "FundingApplicationQuestion")
+    answer: String
+    complete: Boolean
 }

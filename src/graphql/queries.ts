@@ -1,22 +1,106 @@
 // tslint:disable
 // this is an auto generated file. This will be overwritten
 
-export const getApplication = `query GetApplication($id: ID!) {
-  getApplication(id: $id) {
+export const getFundingApplication = `query GetFundingApplication($id: ID!) {
+  getFundingApplication(id: $id) {
     id
-    name
+    opportunityName
+    opportunityDescription
+    opportunityFunders
+    openDate
+    closeDate
+    fundingApplicationQuestions {
+      items {
+        id
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        answer
+        complete
+      }
+      nextToken
+    }
   }
 }
 `;
-export const listApplications = `query ListApplications(
-  $filter: ModelApplicationFilterInput
+export const listFundingApplications = `query ListFundingApplications(
+  $filter: ModelFundingApplicationFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listApplications(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listFundingApplications(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
     items {
       id
-      name
+      opportunityName
+      opportunityDescription
+      opportunityFunders
+      openDate
+      closeDate
+      fundingApplicationQuestions {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getFundingApplicationQuestion = `query GetFundingApplicationQuestion($id: ID!) {
+  getFundingApplicationQuestion(id: $id) {
+    id
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    fundingApplication {
+      id
+      opportunityName
+      opportunityDescription
+      opportunityFunders
+      openDate
+      closeDate
+      fundingApplicationQuestions {
+        nextToken
+      }
+    }
+    answer
+    complete
+  }
+}
+`;
+export const listFundingApplicationQuestions = `query ListFundingApplicationQuestions(
+  $filter: ModelFundingApplicationQuestionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listFundingApplicationQuestions(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      heading
+      title
+      subtitle
+      notes
+      wordLimit
+      fundingApplication {
+        id
+        opportunityName
+        opportunityDescription
+        opportunityFunders
+        openDate
+        closeDate
+      }
+      answer
+      complete
     }
     nextToken
   }
