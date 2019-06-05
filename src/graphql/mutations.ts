@@ -4,6 +4,8 @@
 export const createFundingApplication = `mutation CreateFundingApplication($input: CreateFundingApplicationInput!) {
   createFundingApplication(input: $input) {
     id
+    owner
+    ownerName
     opportunityName
     opportunityDescription
     opportunityFunders
@@ -12,6 +14,7 @@ export const createFundingApplication = `mutation CreateFundingApplication($inpu
     fundingApplicationQuestions {
       items {
         id
+        owner
         heading
         title
         subtitle
@@ -28,6 +31,8 @@ export const createFundingApplication = `mutation CreateFundingApplication($inpu
 export const updateFundingApplication = `mutation UpdateFundingApplication($input: UpdateFundingApplicationInput!) {
   updateFundingApplication(input: $input) {
     id
+    owner
+    ownerName
     opportunityName
     opportunityDescription
     opportunityFunders
@@ -36,6 +41,7 @@ export const updateFundingApplication = `mutation UpdateFundingApplication($inpu
     fundingApplicationQuestions {
       items {
         id
+        owner
         heading
         title
         subtitle
@@ -52,6 +58,8 @@ export const updateFundingApplication = `mutation UpdateFundingApplication($inpu
 export const deleteFundingApplication = `mutation DeleteFundingApplication($input: DeleteFundingApplicationInput!) {
   deleteFundingApplication(input: $input) {
     id
+    owner
+    ownerName
     opportunityName
     opportunityDescription
     opportunityFunders
@@ -60,6 +68,7 @@ export const deleteFundingApplication = `mutation DeleteFundingApplication($inpu
     fundingApplicationQuestions {
       items {
         id
+        owner
         heading
         title
         subtitle
@@ -78,6 +87,7 @@ export const createFundingApplicationQuestion = `mutation CreateFundingApplicati
 ) {
   createFundingApplicationQuestion(input: $input) {
     id
+    owner
     heading
     title
     subtitle
@@ -85,6 +95,8 @@ export const createFundingApplicationQuestion = `mutation CreateFundingApplicati
     wordLimit
     fundingApplication {
       id
+      owner
+      ownerName
       opportunityName
       opportunityDescription
       opportunityFunders
@@ -104,6 +116,7 @@ export const updateFundingApplicationQuestion = `mutation UpdateFundingApplicati
 ) {
   updateFundingApplicationQuestion(input: $input) {
     id
+    owner
     heading
     title
     subtitle
@@ -111,6 +124,8 @@ export const updateFundingApplicationQuestion = `mutation UpdateFundingApplicati
     wordLimit
     fundingApplication {
       id
+      owner
+      ownerName
       opportunityName
       opportunityDescription
       opportunityFunders
@@ -130,6 +145,7 @@ export const deleteFundingApplicationQuestion = `mutation DeleteFundingApplicati
 ) {
   deleteFundingApplicationQuestion(input: $input) {
     id
+    owner
     heading
     title
     subtitle
@@ -137,6 +153,8 @@ export const deleteFundingApplicationQuestion = `mutation DeleteFundingApplicati
     wordLimit
     fundingApplication {
       id
+      owner
+      ownerName
       opportunityName
       opportunityDescription
       opportunityFunders

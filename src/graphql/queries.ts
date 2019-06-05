@@ -4,6 +4,8 @@
 export const getFundingApplication = `query GetFundingApplication($id: ID!) {
   getFundingApplication(id: $id) {
     id
+    owner
+    ownerName
     opportunityName
     opportunityDescription
     opportunityFunders
@@ -12,6 +14,7 @@ export const getFundingApplication = `query GetFundingApplication($id: ID!) {
     fundingApplicationQuestions {
       items {
         id
+        owner
         heading
         title
         subtitle
@@ -37,6 +40,8 @@ export const listFundingApplications = `query ListFundingApplications(
   ) {
     items {
       id
+      owner
+      ownerName
       opportunityName
       opportunityDescription
       opportunityFunders
@@ -53,6 +58,7 @@ export const listFundingApplications = `query ListFundingApplications(
 export const getFundingApplicationQuestion = `query GetFundingApplicationQuestion($id: ID!) {
   getFundingApplicationQuestion(id: $id) {
     id
+    owner
     heading
     title
     subtitle
@@ -60,6 +66,8 @@ export const getFundingApplicationQuestion = `query GetFundingApplicationQuestio
     wordLimit
     fundingApplication {
       id
+      owner
+      ownerName
       opportunityName
       opportunityDescription
       opportunityFunders
@@ -86,6 +94,7 @@ export const listFundingApplicationQuestions = `query ListFundingApplicationQues
   ) {
     items {
       id
+      owner
       heading
       title
       subtitle
@@ -93,6 +102,8 @@ export const listFundingApplicationQuestions = `query ListFundingApplicationQues
       wordLimit
       fundingApplication {
         id
+        owner
+        ownerName
         opportunityName
         opportunityDescription
         opportunityFunders

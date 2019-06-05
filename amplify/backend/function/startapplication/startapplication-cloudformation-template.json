@@ -59,8 +59,8 @@
 				"Runtime": "nodejs8.10",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "ukripoc-application-torchiadev-20190605142502-deployment",
-					"S3Key": "amplify-builds/startapplication-1559741444-latest-build.zip"
+					"S3Bucket": "ukripoc-application-mattdev-20190524170353-deployment",
+					"S3Key": "amplify-builds/startapplication-1559045318-latest-build.zip"
 				}
 			}
 		},

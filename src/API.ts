@@ -3,6 +3,8 @@
 
 export type CreateFundingApplicationInput = {
   id?: string | null,
+  owner?: string | null,
+  ownerName?: string | null,
   opportunityName: string,
   opportunityDescription?: string | null,
   opportunityFunders?: Array< string | null > | null,
@@ -12,6 +14,8 @@ export type CreateFundingApplicationInput = {
 
 export type UpdateFundingApplicationInput = {
   id: string,
+  owner?: string | null,
+  ownerName?: string | null,
   opportunityName?: string | null,
   opportunityDescription?: string | null,
   opportunityFunders?: Array< string | null > | null,
@@ -25,6 +29,7 @@ export type DeleteFundingApplicationInput = {
 
 export type CreateFundingApplicationQuestionInput = {
   id?: string | null,
+  owner?: string | null,
   heading?: string | null,
   title?: string | null,
   subtitle?: string | null,
@@ -37,6 +42,7 @@ export type CreateFundingApplicationQuestionInput = {
 
 export type UpdateFundingApplicationQuestionInput = {
   id: string,
+  owner?: string | null,
   heading?: string | null,
   title?: string | null,
   subtitle?: string | null,
@@ -53,6 +59,8 @@ export type DeleteFundingApplicationQuestionInput = {
 
 export type ModelFundingApplicationFilterInput = {
   id?: ModelIDFilterInput | null,
+  owner?: ModelStringFilterInput | null,
+  ownerName?: ModelStringFilterInput | null,
   opportunityName?: ModelStringFilterInput | null,
   opportunityDescription?: ModelStringFilterInput | null,
   opportunityFunders?: ModelStringFilterInput | null,
@@ -91,6 +99,7 @@ export type ModelStringFilterInput = {
 
 export type ModelFundingApplicationQuestionFilterInput = {
   id?: ModelIDFilterInput | null,
+  owner?: ModelStringFilterInput | null,
   heading?: ModelStringFilterInput | null,
   title?: ModelStringFilterInput | null,
   subtitle?: ModelStringFilterInput | null,
@@ -128,6 +137,8 @@ export type CreateFundingApplicationMutation = {
   createFundingApplication:  {
     __typename: "FundingApplication",
     id: string,
+    owner: string | null,
+    ownerName: string | null,
     opportunityName: string,
     opportunityDescription: string | null,
     opportunityFunders: Array< string | null > | null,
@@ -138,6 +149,7 @@ export type CreateFundingApplicationMutation = {
       items:  Array< {
         __typename: "FundingApplicationQuestion",
         id: string,
+        owner: string | null,
         heading: string | null,
         title: string | null,
         subtitle: string | null,
@@ -159,6 +171,8 @@ export type UpdateFundingApplicationMutation = {
   updateFundingApplication:  {
     __typename: "FundingApplication",
     id: string,
+    owner: string | null,
+    ownerName: string | null,
     opportunityName: string,
     opportunityDescription: string | null,
     opportunityFunders: Array< string | null > | null,
@@ -169,6 +183,7 @@ export type UpdateFundingApplicationMutation = {
       items:  Array< {
         __typename: "FundingApplicationQuestion",
         id: string,
+        owner: string | null,
         heading: string | null,
         title: string | null,
         subtitle: string | null,
@@ -190,6 +205,8 @@ export type DeleteFundingApplicationMutation = {
   deleteFundingApplication:  {
     __typename: "FundingApplication",
     id: string,
+    owner: string | null,
+    ownerName: string | null,
     opportunityName: string,
     opportunityDescription: string | null,
     opportunityFunders: Array< string | null > | null,
@@ -200,6 +217,7 @@ export type DeleteFundingApplicationMutation = {
       items:  Array< {
         __typename: "FundingApplicationQuestion",
         id: string,
+        owner: string | null,
         heading: string | null,
         title: string | null,
         subtitle: string | null,
@@ -221,6 +239,7 @@ export type CreateFundingApplicationQuestionMutation = {
   createFundingApplicationQuestion:  {
     __typename: "FundingApplicationQuestion",
     id: string,
+    owner: string | null,
     heading: string | null,
     title: string | null,
     subtitle: string | null,
@@ -229,6 +248,8 @@ export type CreateFundingApplicationQuestionMutation = {
     fundingApplication:  {
       __typename: "FundingApplication",
       id: string,
+      owner: string | null,
+      ownerName: string | null,
       opportunityName: string,
       opportunityDescription: string | null,
       opportunityFunders: Array< string | null > | null,
@@ -252,6 +273,7 @@ export type UpdateFundingApplicationQuestionMutation = {
   updateFundingApplicationQuestion:  {
     __typename: "FundingApplicationQuestion",
     id: string,
+    owner: string | null,
     heading: string | null,
     title: string | null,
     subtitle: string | null,
@@ -260,6 +282,8 @@ export type UpdateFundingApplicationQuestionMutation = {
     fundingApplication:  {
       __typename: "FundingApplication",
       id: string,
+      owner: string | null,
+      ownerName: string | null,
       opportunityName: string,
       opportunityDescription: string | null,
       opportunityFunders: Array< string | null > | null,
@@ -283,6 +307,7 @@ export type DeleteFundingApplicationQuestionMutation = {
   deleteFundingApplicationQuestion:  {
     __typename: "FundingApplicationQuestion",
     id: string,
+    owner: string | null,
     heading: string | null,
     title: string | null,
     subtitle: string | null,
@@ -291,6 +316,8 @@ export type DeleteFundingApplicationQuestionMutation = {
     fundingApplication:  {
       __typename: "FundingApplication",
       id: string,
+      owner: string | null,
+      ownerName: string | null,
       opportunityName: string,
       opportunityDescription: string | null,
       opportunityFunders: Array< string | null > | null,
@@ -314,6 +341,8 @@ export type GetFundingApplicationQuery = {
   getFundingApplication:  {
     __typename: "FundingApplication",
     id: string,
+    owner: string | null,
+    ownerName: string | null,
     opportunityName: string,
     opportunityDescription: string | null,
     opportunityFunders: Array< string | null > | null,
@@ -324,6 +353,7 @@ export type GetFundingApplicationQuery = {
       items:  Array< {
         __typename: "FundingApplicationQuestion",
         id: string,
+        owner: string | null,
         heading: string | null,
         title: string | null,
         subtitle: string | null,
@@ -349,6 +379,8 @@ export type ListFundingApplicationsQuery = {
     items:  Array< {
       __typename: "FundingApplication",
       id: string,
+      owner: string | null,
+      ownerName: string | null,
       opportunityName: string,
       opportunityDescription: string | null,
       opportunityFunders: Array< string | null > | null,
@@ -371,6 +403,7 @@ export type GetFundingApplicationQuestionQuery = {
   getFundingApplicationQuestion:  {
     __typename: "FundingApplicationQuestion",
     id: string,
+    owner: string | null,
     heading: string | null,
     title: string | null,
     subtitle: string | null,
@@ -379,6 +412,8 @@ export type GetFundingApplicationQuestionQuery = {
     fundingApplication:  {
       __typename: "FundingApplication",
       id: string,
+      owner: string | null,
+      ownerName: string | null,
       opportunityName: string,
       opportunityDescription: string | null,
       opportunityFunders: Array< string | null > | null,
@@ -406,6 +441,7 @@ export type ListFundingApplicationQuestionsQuery = {
     items:  Array< {
       __typename: "FundingApplicationQuestion",
       id: string,
+      owner: string | null,
       heading: string | null,
       title: string | null,
       subtitle: string | null,
@@ -414,6 +450,8 @@ export type ListFundingApplicationQuestionsQuery = {
       fundingApplication:  {
         __typename: "FundingApplication",
         id: string,
+        owner: string | null,
+        ownerName: string | null,
         opportunityName: string,
         opportunityDescription: string | null,
         opportunityFunders: Array< string | null > | null,
@@ -431,6 +469,8 @@ export type OnCreateFundingApplicationSubscription = {
   onCreateFundingApplication:  {
     __typename: "FundingApplication",
     id: string,
+    owner: string | null,
+    ownerName: string | null,
     opportunityName: string,
     opportunityDescription: string | null,
     opportunityFunders: Array< string | null > | null,
@@ -441,6 +481,7 @@ export type OnCreateFundingApplicationSubscription = {
       items:  Array< {
         __typename: "FundingApplicationQuestion",
         id: string,
+        owner: string | null,
         heading: string | null,
         title: string | null,
         subtitle: string | null,
@@ -458,6 +499,8 @@ export type OnUpdateFundingApplicationSubscription = {
   onUpdateFundingApplication:  {
     __typename: "FundingApplication",
     id: string,
+    owner: string | null,
+    ownerName: string | null,
     opportunityName: string,
     opportunityDescription: string | null,
     opportunityFunders: Array< string | null > | null,
@@ -468,6 +511,7 @@ export type OnUpdateFundingApplicationSubscription = {
       items:  Array< {
         __typename: "FundingApplicationQuestion",
         id: string,
+        owner: string | null,
         heading: string | null,
         title: string | null,
         subtitle: string | null,
@@ -485,6 +529,8 @@ export type OnDeleteFundingApplicationSubscription = {
   onDeleteFundingApplication:  {
     __typename: "FundingApplication",
     id: string,
+    owner: string | null,
+    ownerName: string | null,
     opportunityName: string,
     opportunityDescription: string | null,
     opportunityFunders: Array< string | null > | null,
@@ -495,6 +541,7 @@ export type OnDeleteFundingApplicationSubscription = {
       items:  Array< {
         __typename: "FundingApplicationQuestion",
         id: string,
+        owner: string | null,
         heading: string | null,
         title: string | null,
         subtitle: string | null,
@@ -512,6 +559,7 @@ export type OnCreateFundingApplicationQuestionSubscription = {
   onCreateFundingApplicationQuestion:  {
     __typename: "FundingApplicationQuestion",
     id: string,
+    owner: string | null,
     heading: string | null,
     title: string | null,
     subtitle: string | null,
@@ -520,6 +568,8 @@ export type OnCreateFundingApplicationQuestionSubscription = {
     fundingApplication:  {
       __typename: "FundingApplication",
       id: string,
+      owner: string | null,
+      ownerName: string | null,
       opportunityName: string,
       opportunityDescription: string | null,
       opportunityFunders: Array< string | null > | null,
@@ -539,6 +589,7 @@ export type OnUpdateFundingApplicationQuestionSubscription = {
   onUpdateFundingApplicationQuestion:  {
     __typename: "FundingApplicationQuestion",
     id: string,
+    owner: string | null,
     heading: string | null,
     title: string | null,
     subtitle: string | null,
@@ -547,6 +598,8 @@ export type OnUpdateFundingApplicationQuestionSubscription = {
     fundingApplication:  {
       __typename: "FundingApplication",
       id: string,
+      owner: string | null,
+      ownerName: string | null,
       opportunityName: string,
       opportunityDescription: string | null,
       opportunityFunders: Array< string | null > | null,
@@ -566,6 +619,7 @@ export type OnDeleteFundingApplicationQuestionSubscription = {
   onDeleteFundingApplicationQuestion:  {
     __typename: "FundingApplicationQuestion",
     id: string,
+    owner: string | null,
     heading: string | null,
     title: string | null,
     subtitle: string | null,
@@ -574,6 +628,8 @@ export type OnDeleteFundingApplicationQuestionSubscription = {
     fundingApplication:  {
       __typename: "FundingApplication",
       id: string,
+      owner: string | null,
+      ownerName: string | null,
       opportunityName: string,
       opportunityDescription: string | null,
       opportunityFunders: Array< string | null > | null,

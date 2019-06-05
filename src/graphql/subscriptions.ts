@@ -4,6 +4,8 @@
 export const onCreateFundingApplication = `subscription OnCreateFundingApplication {
   onCreateFundingApplication {
     id
+    owner
+    ownerName
     opportunityName
     opportunityDescription
     opportunityFunders
@@ -12,6 +14,7 @@ export const onCreateFundingApplication = `subscription OnCreateFundingApplicati
     fundingApplicationQuestions {
       items {
         id
+        owner
         heading
         title
         subtitle
@@ -28,6 +31,8 @@ export const onCreateFundingApplication = `subscription OnCreateFundingApplicati
 export const onUpdateFundingApplication = `subscription OnUpdateFundingApplication {
   onUpdateFundingApplication {
     id
+    owner
+    ownerName
     opportunityName
     opportunityDescription
     opportunityFunders
@@ -36,6 +41,7 @@ export const onUpdateFundingApplication = `subscription OnUpdateFundingApplicati
     fundingApplicationQuestions {
       items {
         id
+        owner
         heading
         title
         subtitle
@@ -52,6 +58,8 @@ export const onUpdateFundingApplication = `subscription OnUpdateFundingApplicati
 export const onDeleteFundingApplication = `subscription OnDeleteFundingApplication {
   onDeleteFundingApplication {
     id
+    owner
+    ownerName
     opportunityName
     opportunityDescription
     opportunityFunders
@@ -60,6 +68,7 @@ export const onDeleteFundingApplication = `subscription OnDeleteFundingApplicati
     fundingApplicationQuestions {
       items {
         id
+        owner
         heading
         title
         subtitle
@@ -76,6 +85,7 @@ export const onDeleteFundingApplication = `subscription OnDeleteFundingApplicati
 export const onCreateFundingApplicationQuestion = `subscription OnCreateFundingApplicationQuestion {
   onCreateFundingApplicationQuestion {
     id
+    owner
     heading
     title
     subtitle
@@ -83,6 +93,8 @@ export const onCreateFundingApplicationQuestion = `subscription OnCreateFundingA
     wordLimit
     fundingApplication {
       id
+      owner
+      ownerName
       opportunityName
       opportunityDescription
       opportunityFunders
@@ -100,6 +112,7 @@ export const onCreateFundingApplicationQuestion = `subscription OnCreateFundingA
 export const onUpdateFundingApplicationQuestion = `subscription OnUpdateFundingApplicationQuestion {
   onUpdateFundingApplicationQuestion {
     id
+    owner
     heading
     title
     subtitle
@@ -107,6 +120,8 @@ export const onUpdateFundingApplicationQuestion = `subscription OnUpdateFundingA
     wordLimit
     fundingApplication {
       id
+      owner
+      ownerName
       opportunityName
       opportunityDescription
       opportunityFunders
@@ -124,6 +139,7 @@ export const onUpdateFundingApplicationQuestion = `subscription OnUpdateFundingA
 export const onDeleteFundingApplicationQuestion = `subscription OnDeleteFundingApplicationQuestion {
   onDeleteFundingApplicationQuestion {
     id
+    owner
     heading
     title
     subtitle
@@ -131,6 +147,8 @@ export const onDeleteFundingApplicationQuestion = `subscription OnDeleteFundingA
     wordLimit
     fundingApplication {
       id
+      owner
+      ownerName
       opportunityName
       opportunityDescription
       opportunityFunders
