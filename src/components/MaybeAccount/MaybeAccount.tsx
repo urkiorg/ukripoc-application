@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes, useCallback, useEffect } from "react";
+import React, { FC, useCallback } from "react";
 
 import { Link, RouteComponentProps } from "@reach/router";
 import { Title, ukriGreen } from "ukripoc-components";
