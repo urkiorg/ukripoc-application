@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useCallback } from "react";
-import Amplify, { Hub } from "aws-amplify";
+import Amplify from "aws-amplify";
 import Auth, { CognitoUser } from "@aws-amplify/auth";
 import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
 import { ApolloProvider } from "react-apollo-hooks";
@@ -12,11 +12,9 @@ import { Authenticator } from "aws-amplify-react";
 
 import "ukripoc-components/fonts.scss";
 
-import { HubCallback } from "@aws-amplify/core/lib/Hub";
 import { AuthWrapper } from "./components/AuthWrapper";
-import { stringType } from "aws-sdk/clients/iam";
 import { navigate } from "@reach/router";
-import { checkContact, isCognitoUser, UserType } from "./lib/account";
+import { isCognitoUser, UserType } from "./lib/account";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -62,7 +60,7 @@ export const App: FC = () => {
     }, []);
 
     const handleStateChange = useCallback(
-        (state: stringType, user?: UserType) => {
+        (state: string, user?: UserType) => {
             console.log("NEW STATE", state, user);
             if (state === "confirmSignUp") {
                 navigate("/confirm");

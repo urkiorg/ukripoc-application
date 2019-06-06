@@ -4,14 +4,8 @@ import Input from "@govuk-react/input";
 import Button from "@govuk-react/button";
 import LabelText from "@govuk-react/label-text";
 import ErrorSummary from "@govuk-react/error-summary";
-import {
-    navigate,
-    Link,
-    RouterProps,
-    RouteComponentProps
-} from "@reach/router";
+import { Link, RouteComponentProps } from "@reach/router";
 import ErrorText from "@govuk-react/error-text";
-import { Auth } from "aws-amplify";
 import Caption from "@govuk-react/caption";
 import LoadingBox from "@govuk-react/loading-box";
 import BackLink from "@govuk-react/back-link";
