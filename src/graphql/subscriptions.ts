@@ -1,24 +1,165 @@
 // tslint:disable
 // this is an auto generated file. This will be overwritten
 
-export const onCreateApplication = `subscription OnCreateApplication {
-  onCreateApplication {
+export const onCreateFundingApplication = `subscription OnCreateFundingApplication {
+  onCreateFundingApplication {
     id
-    name
+    owner
+    ownerName
+    opportunityName
+    opportunityDescription
+    opportunityFunders
+    openDate
+    closeDate
+    fundingApplicationQuestions {
+      items {
+        id
+        owner
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        answer
+        complete
+      }
+      nextToken
+    }
   }
 }
 `;
-export const onUpdateApplication = `subscription OnUpdateApplication {
-  onUpdateApplication {
+export const onUpdateFundingApplication = `subscription OnUpdateFundingApplication {
+  onUpdateFundingApplication {
     id
-    name
+    owner
+    ownerName
+    opportunityName
+    opportunityDescription
+    opportunityFunders
+    openDate
+    closeDate
+    fundingApplicationQuestions {
+      items {
+        id
+        owner
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        answer
+        complete
+      }
+      nextToken
+    }
   }
 }
 `;
-export const onDeleteApplication = `subscription OnDeleteApplication {
-  onDeleteApplication {
+export const onDeleteFundingApplication = `subscription OnDeleteFundingApplication {
+  onDeleteFundingApplication {
     id
-    name
+    owner
+    ownerName
+    opportunityName
+    opportunityDescription
+    opportunityFunders
+    openDate
+    closeDate
+    fundingApplicationQuestions {
+      items {
+        id
+        owner
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        answer
+        complete
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onCreateFundingApplicationQuestion = `subscription OnCreateFundingApplicationQuestion {
+  onCreateFundingApplicationQuestion {
+    id
+    owner
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    fundingApplication {
+      id
+      owner
+      ownerName
+      opportunityName
+      opportunityDescription
+      opportunityFunders
+      openDate
+      closeDate
+      fundingApplicationQuestions {
+        nextToken
+      }
+    }
+    answer
+    complete
+  }
+}
+`;
+export const onUpdateFundingApplicationQuestion = `subscription OnUpdateFundingApplicationQuestion {
+  onUpdateFundingApplicationQuestion {
+    id
+    owner
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    fundingApplication {
+      id
+      owner
+      ownerName
+      opportunityName
+      opportunityDescription
+      opportunityFunders
+      openDate
+      closeDate
+      fundingApplicationQuestions {
+        nextToken
+      }
+    }
+    answer
+    complete
+  }
+}
+`;
+export const onDeleteFundingApplicationQuestion = `subscription OnDeleteFundingApplicationQuestion {
+  onDeleteFundingApplicationQuestion {
+    id
+    owner
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    fundingApplication {
+      id
+      owner
+      ownerName
+      opportunityName
+      opportunityDescription
+      opportunityFunders
+      openDate
+      closeDate
+      fundingApplicationQuestions {
+        nextToken
+      }
+    }
+    answer
+    complete
   }
 }
 `;

@@ -1,24 +1,171 @@
 // tslint:disable
 // this is an auto generated file. This will be overwritten
 
-export const createApplication = `mutation CreateApplication($input: CreateApplicationInput!) {
-  createApplication(input: $input) {
+export const createFundingApplication = `mutation CreateFundingApplication($input: CreateFundingApplicationInput!) {
+  createFundingApplication(input: $input) {
     id
-    name
+    owner
+    ownerName
+    opportunityName
+    opportunityDescription
+    opportunityFunders
+    openDate
+    closeDate
+    fundingApplicationQuestions {
+      items {
+        id
+        owner
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        answer
+        complete
+      }
+      nextToken
+    }
   }
 }
 `;
-export const updateApplication = `mutation UpdateApplication($input: UpdateApplicationInput!) {
-  updateApplication(input: $input) {
+export const updateFundingApplication = `mutation UpdateFundingApplication($input: UpdateFundingApplicationInput!) {
+  updateFundingApplication(input: $input) {
     id
-    name
+    owner
+    ownerName
+    opportunityName
+    opportunityDescription
+    opportunityFunders
+    openDate
+    closeDate
+    fundingApplicationQuestions {
+      items {
+        id
+        owner
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        answer
+        complete
+      }
+      nextToken
+    }
   }
 }
 `;
-export const deleteApplication = `mutation DeleteApplication($input: DeleteApplicationInput!) {
-  deleteApplication(input: $input) {
+export const deleteFundingApplication = `mutation DeleteFundingApplication($input: DeleteFundingApplicationInput!) {
+  deleteFundingApplication(input: $input) {
     id
-    name
+    owner
+    ownerName
+    opportunityName
+    opportunityDescription
+    opportunityFunders
+    openDate
+    closeDate
+    fundingApplicationQuestions {
+      items {
+        id
+        owner
+        heading
+        title
+        subtitle
+        notes
+        wordLimit
+        answer
+        complete
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createFundingApplicationQuestion = `mutation CreateFundingApplicationQuestion(
+  $input: CreateFundingApplicationQuestionInput!
+) {
+  createFundingApplicationQuestion(input: $input) {
+    id
+    owner
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    fundingApplication {
+      id
+      owner
+      ownerName
+      opportunityName
+      opportunityDescription
+      opportunityFunders
+      openDate
+      closeDate
+      fundingApplicationQuestions {
+        nextToken
+      }
+    }
+    answer
+    complete
+  }
+}
+`;
+export const updateFundingApplicationQuestion = `mutation UpdateFundingApplicationQuestion(
+  $input: UpdateFundingApplicationQuestionInput!
+) {
+  updateFundingApplicationQuestion(input: $input) {
+    id
+    owner
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    fundingApplication {
+      id
+      owner
+      ownerName
+      opportunityName
+      opportunityDescription
+      opportunityFunders
+      openDate
+      closeDate
+      fundingApplicationQuestions {
+        nextToken
+      }
+    }
+    answer
+    complete
+  }
+}
+`;
+export const deleteFundingApplicationQuestion = `mutation DeleteFundingApplicationQuestion(
+  $input: DeleteFundingApplicationQuestionInput!
+) {
+  deleteFundingApplicationQuestion(input: $input) {
+    id
+    owner
+    heading
+    title
+    subtitle
+    notes
+    wordLimit
+    fundingApplication {
+      id
+      owner
+      ownerName
+      opportunityName
+      opportunityDescription
+      opportunityFunders
+      openDate
+      closeDate
+      fundingApplicationQuestions {
+        nextToken
+      }
+    }
+    answer
+    complete
   }
 }
 `;
