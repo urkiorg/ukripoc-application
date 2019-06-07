@@ -68,9 +68,7 @@
         "eject": "react-scripts eject",
         "new-component": "hygen component new --name ",
         "storybook": "start-storybook -p 9009 -s public",
-        "build-storybook": "build-storybook -s public -o dist/storybook",
-        "build-lambda": "cd ./amplify/backend/function/startapplication/src/ && npm run build",
-        "init-lambda": "cd ./amplify/backend/function/startapplication/src/ && npm install && npm run build"
+        "build-storybook": "build-storybook -s public -o dist/storybook"
     },
     "eslintConfig": {
         "extends": "react-app"
