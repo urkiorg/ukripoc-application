@@ -33,7 +33,7 @@ export const ApplicationContainerItemComplete = styled.div`
     font-weight: bold;
     line-height: 70px;
     text-align: center;
-    border-left: 1px dotted black;
+    border-left: 1px dotted ${GREY_3};
 `;
 
 export const ApplicationContainerTimeline = styled.div`
