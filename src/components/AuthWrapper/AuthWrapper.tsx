@@ -8,6 +8,7 @@ import { MaybeAccount } from "../MaybeAccount";
 import { AuthRedirector } from "../AuthRedirector";
 import { ConfirmSignUp } from "../ConfirmSignUp";
 import { ApplicationDashboardPage } from "../ApplicationDashboardPage";
+import { ApplicationPage } from "../ApplicationPage";
 
 interface Props extends AuthenticatorProps {}
 
@@ -39,6 +40,8 @@ export const AuthWrapper: FC<Props> = props => {
                     <ConfirmSignUp authProps={props} path="/confirm" />
                 )}
                 <ConfirmSignUp authProps={props} path="/confirm/:code" />
+
+                <ApplicationPage path="/application/:id" />
             </Router>
         </>
     );
