@@ -11,14 +11,12 @@ interface Props extends RouteComponentProps {}
 const GET_APPLICATION = gql(getFundingApplication);
 
 export const ApplicationDashboardPage: FC<Props> = props => {
-    const v = new Date("June 08, 2019 12:10:00");
-
     const application = {
         id: 1,
         name: "two",
         description: "three",
         number: 400,
-        closeDate: v.toISOString(),
+        closeDate: new Date("June 08, 2019 12:10:00").toISOString(),
         Opportunity: {
             name: "This will do"
         }
@@ -43,6 +41,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
 
     const { data } = useQuery<GetFundingApplicationQuery>(GET_APPLICATION);
 
+    //TODO replace applications with data when we no longer need to mock
     console.log(data);
 
     return <ApplicationDashboard applications={applications} />;

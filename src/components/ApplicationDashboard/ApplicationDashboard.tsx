@@ -33,7 +33,7 @@ export const ApplicationContainerItemComplete = styled.div`
     font-weight: bold;
     line-height: 70px;
     text-align: center;
-    border-left: 1px dotted ${NTA_LIGHT};
+    border-left: 1px dotted black;
 `;
 
 export const ApplicationContainerTimeline = styled.div`
@@ -61,18 +61,22 @@ export const ApplicationDashboard: FC<Props> = props => {
 
         if (timeLeft > 24 && timeLeft < 48) {
             timeToShow = Math.floor(timeLeft / 24);
-            prefixToShow = "Day";
+            prefixToShow = "Day left";
         } else if (timeLeft > 47) {
+            //2days etc...
             timeToShow = Math.floor(timeLeft / 24);
-            prefixToShow = "Days";
+            prefixToShow = "Days left";
         } else if (timeLeft === 1) {
-            prefixToShow = "Hour";
+            prefixToShow = "Hour left";
+        } else if (timeLeft < 0) {
+            timeToShow = 0;
+            prefixToShow = "Ended";
         }
 
         return (
             <>
                 <H4 mb={0}>{timeToShow}</H4>
-                <span>{prefixToShow} left</span>
+                <span>{prefixToShow}</span>
             </>
         );
     }
