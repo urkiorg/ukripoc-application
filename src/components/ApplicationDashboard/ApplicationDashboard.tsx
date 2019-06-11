@@ -13,6 +13,7 @@ import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
 import styled from "styled-components";
+import { ListFundingApplicationsQuery } from "../../API";
 
 export const ApplicationContainer = styled.div`
     background: ${GREY_3};
@@ -42,12 +43,10 @@ export const ApplicationContainerTimeline = styled.div`
 `;
 
 interface Props extends RouteComponentProps {
-    applications: any;
+    applications?: ListFundingApplicationsQuery;
 }
 
 export const ApplicationDashboard: FC<Props> = props => {
-    console.log(props.applications);
-
     function daysLeft(date: string) {
         const closeDate = new Date(date);
         const closeDateTime = closeDate.getTime();
@@ -63,7 +62,6 @@ export const ApplicationDashboard: FC<Props> = props => {
             timeToShow = Math.floor(timeLeft / 24);
             prefixToShow = "Day left";
         } else if (timeLeft > 47) {
-            //2days etc...
             timeToShow = Math.floor(timeLeft / 24);
             prefixToShow = "Days left";
         } else if (timeLeft === 1) {
@@ -93,49 +91,61 @@ export const ApplicationDashboard: FC<Props> = props => {
             <Title>Dashboard</Title>
             <ApplicationContainer>
                 <H4 mb={1}> Applications </H4>
-                <span> In progress ( {props.applications.length} )</span>
+                <span>
+                    In progress (
+                    {props.applications &&
+                        props.applications.listFundingApplications &&
+                        props.applications.listFundingApplications.items &&
+                        props.applications.listFundingApplications.items.length}
+                    )
+                </span>
                 {props.applications &&
-                    props.applications.length &&
-                    props.applications.map((application: any) => {
-                        return (
-                            <ApplicationContainerItem key={application.id}>
-                                <GridRow>
-                                    <GridCol setWidth="50%">
-                                        <Link
-                                            as={RouterLink}
-                                            to={`application/${application.id}`}
-                                        >
-                                            {application.name}
-                                        </Link>
-                                        <div>
-                                            Application number:
-                                            {application.number}
-                                        </div>
-                                        <div>
-                                            Opportunity:
-                                            {application.Opportunity.name}
-                                        </div>
-                                    </GridCol>
-                                    <GridCol setWidth="25%">
-                                        <ApplicationContainerTimeline>
-                                            {daysLeft(application.closeDate)}
+                    props.applications.listFundingApplications &&
+                    props.applications.listFundingApplications.items &&
+                    props.applications.listFundingApplications.items.map(
+                        (application: any) => {
+                            return (
+                                <ApplicationContainerItem key={application.id}>
+                                    <GridRow>
+                                        <GridCol setWidth="50%">
+                                            <Link
+                                                as={RouterLink}
+                                                to={`application/${application.id}`}
+                                            >
+                                                {application.name}
+                                            </Link>
                                             <div>
-                                                Deadline{" "}
-                                                {friendlyDate(
+                                                Application number:
+                                                {application.number}
+                                            </div>
+                                            <div>
+                                                Opportunity:
+                                                {application.Opportunity.name}
+                                            </div>
+                                        </GridCol>
+                                        <GridCol setWidth="25%">
+                                            <ApplicationContainerTimeline>
+                                                {daysLeft(
                                                     application.closeDate
                                                 )}
-                                            </div>
-                                        </ApplicationContainerTimeline>
-                                    </GridCol>
-                                    <GridCol setWidth="25%">
-                                        <ApplicationContainerItemComplete>
-                                            0% complete
-                                        </ApplicationContainerItemComplete>
-                                    </GridCol>
-                                </GridRow>
-                            </ApplicationContainerItem>
-                        );
-                    })}
+                                                <div>
+                                                    Deadline
+                                                    {friendlyDate(
+                                                        application.closeDate
+                                                    )}
+                                                </div>
+                                            </ApplicationContainerTimeline>
+                                        </GridCol>
+                                        <GridCol setWidth="25%">
+                                            <ApplicationContainerItemComplete>
+                                                0% complete
+                                            </ApplicationContainerItemComplete>
+                                        </GridCol>
+                                    </GridRow>
+                                </ApplicationContainerItem>
+                            );
+                        }
+                    )}
             </ApplicationContainer>
         </>
     );
