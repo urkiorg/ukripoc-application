@@ -43,10 +43,15 @@ export const ApplicationContainerTimeline = styled.div`
 `;
 
 interface Props extends RouteComponentProps {
-    applications?: ListFundingApplicationsQuery;
+    applications?: ListFundingApplicationsQuery; //change when not mocked
 }
 
 export const ApplicationDashboard: FC<Props> = props => {
+    const applications =
+        props.applications &&
+        props.applications.listFundingApplications &&
+        props.applications.listFundingApplications.items;
+
     function daysLeft(date: string) {
         const closeDate = new Date(date);
         const closeDateTime = closeDate.getTime();
@@ -79,11 +84,14 @@ export const ApplicationDashboard: FC<Props> = props => {
         );
     }
 
-    function friendlyDate(date: string) {
-        return new Date(date).toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "long"
-        });
+    function friendlyDate(date: string | null) {
+        return (
+            date &&
+            new Date(date).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "long"
+            })
+        );
     }
 
     return (
@@ -91,61 +99,53 @@ export const ApplicationDashboard: FC<Props> = props => {
             <Title>Dashboard</Title>
             <ApplicationContainer>
                 <H4 mb={1}> Applications </H4>
-                <span>
-                    In progress (
-                    {props.applications &&
-                        props.applications.listFundingApplications &&
-                        props.applications.listFundingApplications.items &&
-                        props.applications.listFundingApplications.items.length}
-                    )
-                </span>
-                {props.applications &&
-                    props.applications.listFundingApplications &&
-                    props.applications.listFundingApplications.items &&
-                    props.applications.listFundingApplications.items.map(
-                        (application: any) => {
-                            return (
-                                <ApplicationContainerItem key={application.id}>
-                                    <GridRow>
-                                        <GridCol setWidth="50%">
-                                            <Link
-                                                as={RouterLink}
-                                                to={`application/${application.id}`}
-                                            >
-                                                {application.name}
-                                            </Link>
+
+                <span>In progress ({applications && applications.length})</span>
+
+                {applications &&
+                    applications.map(application => {
+                        if (!application) {
+                            return <div> Loading...</div>;
+                        }
+                        return (
+                            <ApplicationContainerItem key={application.id}>
+                                <GridRow>
+                                    <GridCol setWidth="50%">
+                                        <Link
+                                            as={RouterLink}
+                                            to={`application/${application.id}`}
+                                        >
+                                            {application.opportunityName}
+                                        </Link>
+                                        <div>
+                                            Application number:
+                                            {application.id}
+                                        </div>
+                                        <div>
+                                            Opportunity:
+                                            {application.id}
+                                        </div>
+                                    </GridCol>
+                                    <GridCol setWidth="25%">
+                                        <ApplicationContainerTimeline>
+                                            {daysLeft(application.closeDate)}
                                             <div>
-                                                Application number:
-                                                {application.number}
-                                            </div>
-                                            <div>
-                                                Opportunity:
-                                                {application.Opportunity.name}
-                                            </div>
-                                        </GridCol>
-                                        <GridCol setWidth="25%">
-                                            <ApplicationContainerTimeline>
-                                                {daysLeft(
+                                                Deadline
+                                                {friendlyDate(
                                                     application.closeDate
                                                 )}
-                                                <div>
-                                                    Deadline
-                                                    {friendlyDate(
-                                                        application.closeDate
-                                                    )}
-                                                </div>
-                                            </ApplicationContainerTimeline>
-                                        </GridCol>
-                                        <GridCol setWidth="25%">
-                                            <ApplicationContainerItemComplete>
-                                                0% complete
-                                            </ApplicationContainerItemComplete>
-                                        </GridCol>
-                                    </GridRow>
-                                </ApplicationContainerItem>
-                            );
-                        }
-                    )}
+                                            </div>
+                                        </ApplicationContainerTimeline>
+                                    </GridCol>
+                                    <GridCol setWidth="25%">
+                                        <ApplicationContainerItemComplete>
+                                            0% complete
+                                        </ApplicationContainerItemComplete>
+                                    </GridCol>
+                                </GridRow>
+                            </ApplicationContainerItem>
+                        );
+                    })}
             </ApplicationContainer>
         </>
     );
