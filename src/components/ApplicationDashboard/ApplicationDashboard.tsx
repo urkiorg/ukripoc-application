@@ -52,7 +52,11 @@ export const ApplicationDashboard: FC<Props> = props => {
         props.applications.listFundingApplications &&
         props.applications.listFundingApplications.items;
 
-    function daysLeft(date: string) {
+    function daysLeft(date: string | null) {
+        if (!date) {
+            return <div> No close date</div>;
+        }
+
         const closeDate = new Date(date);
         const closeDateTime = closeDate.getTime();
         const today = new Date();
