@@ -1,40 +1,30 @@
-import React, {
-    FC,
-    useCallback,
-    useState,
-    SyntheticEvent,
-    FormEvent
-} from "react";
+import React, { FC, useCallback, useState, FormEvent } from "react";
 
-import Breadcrumbs from "@govuk-react/breadcrumbs";
+import { useFormState } from "react-use-form-state";
+import { RouteComponentProps } from "@reach/router";
+import { GetFundingApplicationQuestionQuery } from "../../API";
 
 import { Title, ukriGreen } from "ukripoc-components";
 
+import Breadcrumbs from "@govuk-react/breadcrumbs";
 import Details from "@govuk-react/details";
 import Caption from "@govuk-react/caption";
 import LoadingBox from "@govuk-react/loading-box";
 import Checkbox from "@govuk-react/checkbox";
-
 import TextArea from "@govuk-react/text-area";
-
-import { useFormState } from "react-use-form-state";
-
+import FormGroup from "@govuk-react/form-group";
+import Button from "@govuk-react/button";
 import { NTA_LIGHT } from "@govuk-react/constants";
+import ErrorText from "@govuk-react/error-text";
 import { GREY_3 } from "govuk-colours";
 
 import styled from "styled-components";
-import FormGroup from "@govuk-react/form-group";
-import Button from "@govuk-react/button";
-import { RouteComponentProps } from "@reach/router";
-import { GetFundingApplicationQuestionQuery } from "../../API";
-
-import ErrorText from "@govuk-react/error-text";
 
 export const MarkAsComplete = styled.div`
     font-family: ${NTA_LIGHT};
     background-color: ${GREY_3};
-    padding: 10px;
-    margin-bottom: 20px;
+    padding: 10px 10px 2px 20px;
+    margin: 20px 0;
 `;
 
 interface Form {
@@ -69,7 +59,7 @@ export const Question: FC<Props> = ({
 
     const [wordsRemaining, setWordsRemaining] = useState(wordLimit);
 
-    const [formState, { textarea }] = useFormState(initialState);
+    const [formState, { textarea, checkbox }] = useFormState(initialState);
 
     const onSubmit = useCallback(
         async (event: FormEvent) => {
@@ -90,13 +80,6 @@ export const Question: FC<Props> = ({
     if (!q) {
         return <div> Loading... </div>;
     }
-
-    const onChecked = (event: SyntheticEvent<HTMLInputElement>) => {
-        setQuestionForm({
-            ...questionForm,
-            [event.currentTarget.name]: event.currentTarget.checked
-        });
-    };
 
     function onInputChange(event: string) {
         const textAreaValue = event;
@@ -155,9 +138,9 @@ export const Question: FC<Props> = ({
 
                     <MarkAsComplete>
                         <Checkbox
-                            name="complete"
-                            defaultChecked={questionForm.complete}
-                            onChange={onChecked}
+                            {...checkbox({
+                                name: "complete"
+                            })}
                         >
                             Mark as complete
                         </Checkbox>
