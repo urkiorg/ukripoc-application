@@ -1,87 +1,91 @@
 import React, { FC, useEffect, useState } from "react";
 import { RouteComponentProps } from "@reach/router";
 import gql from "graphql-tag";
+import { useMutation } from "react-apollo-hooks";
 import { ApplicationDashboard } from "../ApplicationDashboard";
 import { GetFundingApplicationQuery } from "../../API";
 import { getFundingApplication } from "../../graphql/queries";
 import { useQuery } from "react-apollo-hooks";
+import { CreateFundingApplicationMutation } from "../../API";
+import { createFundingApplication } from "../../graphql/mutations";
+
+import { OpportunityWithApplication } from "../../types";
 
 interface Props extends RouteComponentProps {}
 
 const GET_APPLICATION = gql(getFundingApplication);
+const UPDATE_USERS_APPLICATIONS = gql(createFundingApplication);
+const formatApplication = (opportunityWithApplication: OpportunityWithApplication) => {
+    const { name, description } = opportunityWithApplication;
+    const { lowestRankedApplication } = opportunityWithApplication;
+    const { id, openApplication, closeApplication, questions } = lowestRankedApplication;
+
+    // need dynamic opportunityFunders and number
+    return {
+        id,
+        opportunityName: name,
+        opportunityDescription: description,
+        opportunityFunders: "",
+        openDate: openApplication,
+        closeDate: closeApplication,
+        fundingApplicationQuestions: questions,
+        number: 0,
+    }
+}
+
+const putFundingApplication = useMutation<
+    CreateFundingApplicationMutation
+    >(UPDATE_USERS_APPLICATIONS);
+
+const addApplicationToUser = async (opportunityWithApplication: OpportunityWithApplication) => {
+    const fundingApplications = formatApplication(opportunityWithApplication);
+    await putFundingApplication({
+        variables: {
+            input: fundingApplications
+        }
+    });
+}
+
+// What is the endpoint?
+const getApplications = useQuery<GetFundingApplicationQuery>(GET_APPLICATION).data;
 
 export const ApplicationDashboardPage: FC<Props> = (props) => {
-
-    // Get opportunity with application details
-    // Put info into database using the format of the schema below:
-    // https://github.com/urkiorg/ukripoc-application/blob/develop/amplify/backend/api/application/schema.graphql
-    // Get all user applications
 
     const [applications, setApplications] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    
     useEffect (() => {
-        // Retrieve opportunity id from local storage
+        setLoading(true);
+        // Retrieve opportunity id from local storage, if present
         const opportunityId = window.localStorage.getItem("opportunityId");
         
-        // Get new opportunity
         if (opportunityId) {
-
-            // temp
-            setApplications([]);
-            setError(false)
-            setLoading(false);
-
-            // Get opportunity with application details
-            // On success remove opportunityId from local storage
+            const opportunityWithApplication = async (opportunityId: string) => {
+                let opportunityWithApplication
+                try {
+                    // Hard code the full url
+                    opportunityWithApplication = await fetch(`/opportunity-listing/retrieve/${opportunityId}`)
+                    setLoading(false);
+                    setError(false);
+                    return opportunityWithApplication;
+                } catch(error) {
+                    setLoading(false);
+                    setError(true);
+                }
+            };
             
-            // then
-            // Put info into database using the format of the schema below:
-            // https://github.com/urkiorg/ukripoc-application/blob/develop/amplify/backend/api/application/schema.graphql
+            addApplicationToUser(opportunityWithApplication(opportunityId));
 
-            // then
-            // Clear localStorage
             window.localStorage.removeItem("opportunityId");
         }
 
-        // Get all user applications
+        if (getApplications) {
+            setApplications(getApplications);
+        }
 
-        // setLoading(true)
+        setLoading(false);
     }, []);
-
-    // const application = {
-    //     id: 1,
-    //     name: "two",
-    //     description: "three",
-    //     number: 400,
-    //     closeDate: new Date("June 08, 2019 12:10:00").toISOString(),
-    //     Opportunity: {
-    //         name: "This will do"
-    //     }
-    // };
-
-    // const applications = [
-    //     application,
-    //     { ...application, id: 3, name: "another one" },
-    //     {
-    //         ...application,
-    //         id: 4,
-    //         name: "what",
-    //         closeDate: new Date("July 18, 2019 23:24:00").toISOString()
-    //     },
-    //     {
-    //         ...application,
-    //         id: 6,
-    //         name: "Hello",
-    //         closeDate: new Date("June 8, 2019 23:24:00").toISOString()
-    //     }
-    // ];
-
-    const { data } = useQuery<GetFundingApplicationQuery>(GET_APPLICATION);
-
-    //TODO replace applications with data when we no longer need to mock
-    console.log(data);
 
     return <ApplicationDashboard
         error={error}
