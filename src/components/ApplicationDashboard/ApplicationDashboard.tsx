@@ -18,7 +18,6 @@ import { ListFundingApplicationsQuery } from "../../API";
 import { daysLeft, friendlyDate } from "../../lib/dateandtime";
 
 import P from "@govuk-react/paragraph";
-import { DateandtimeReturnType } from "../../types";
 
 export const ApplicationContainer = styled.div`
     background: ${GREY_3};
@@ -73,9 +72,7 @@ export const ApplicationDashboard: FC<Props> = props => {
                             return null;
                         }
 
-                        const result: DateandtimeReturnType = {
-                            ...daysLeft(application.closeDate)
-                        };
+                        const result = daysLeft(application.closeDate);
 
                         const closeDate: string | null = friendlyDate(
                             application.closeDate
