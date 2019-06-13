@@ -14,10 +14,17 @@ interface Props extends RouteComponentProps {}
 
 const GET_APPLICATION = gql(getFundingApplication);
 const UPDATE_USERS_APPLICATIONS = gql(createFundingApplication);
-const formatApplication = (opportunityWithApplication: OpportunityWithApplication) => {
+const formatApplication = (
+    opportunityWithApplication: OpportunityWithApplication
+) => {
     const { name, description } = opportunityWithApplication;
     const { lowestRankedApplication } = opportunityWithApplication;
-    const { id, openApplication, closeApplication, questions } = lowestRankedApplication;
+    const {
+        id,
+        openApplication,
+        closeApplication,
+        questions
+    } = lowestRankedApplication;
 
     // need dynamic opportunityFunders and number
     return {
@@ -28,53 +35,58 @@ const formatApplication = (opportunityWithApplication: OpportunityWithApplicatio
         openDate: openApplication,
         closeDate: closeApplication,
         fundingApplicationQuestions: questions,
-        number: 0,
-    }
-}
+        number: 0
+    };
+};
 
-export const ApplicationDashboardPage: FC<Props> = (props) => {
-
+export const ApplicationDashboardPage: FC<Props> = props => {
     const [applications, setApplications] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const putFundingApplication = useMutation<
-        CreateFundingApplicationMutation
-        >(UPDATE_USERS_APPLICATIONS);
+    const putFundingApplication = useMutation<CreateFundingApplicationMutation>(
+        UPDATE_USERS_APPLICATIONS
+    );
 
     // What is the endpoint?
-    const getApplications = useQuery<GetFundingApplicationQuery>(GET_APPLICATION).data;
+    const getApplications = useQuery<GetFundingApplicationQuery>(
+        GET_APPLICATION
+    ).data;
 
     const addApplicationToUser = useCallback(
         async (opportunityWithApplication: OpportunityWithApplication) => {
             await putFundingApplication({
-                    variables: {
+                variables: {
                     input: formatApplication(opportunityWithApplication)
                 }
-            })
+            });
         },
         [putFundingApplication]
     );
-    
-    useEffect (() => {
+
+    useEffect(() => {
         setLoading(true);
         // Retrieve opportunity id from local storage, if present
         const opportunityId = window.localStorage.getItem("opportunityId");
-        
+
         if (opportunityId) {
-            const opportunityWithApplication = async (opportunityId: string) => {
+            const opportunityWithApplication = async (
+                opportunityId: string
+            ) => {
                 try {
                     // Hard code the full url
-                    let response = await fetch(`/opportunity-listing/retrieve/${opportunityId}`)
+                    let response = await fetch(
+                        `/opportunity-listing/retrieve/${opportunityId}`
+                    );
                     setLoading(false);
                     setError(false);
                     return response.json();
-                } catch(error) {
+                } catch (error) {
                     setLoading(false);
                     setError(true);
                 }
             };
-            
+
             // @ts-ignore
             addApplicationToUser(opportunityWithApplication(opportunityId));
 
@@ -82,17 +94,20 @@ export const ApplicationDashboardPage: FC<Props> = (props) => {
         }
 
         if (getApplications) {
-                        // @ts-ignore
+            // @ts-ignore
             setApplications(getApplications);
         }
 
         setLoading(false);
     }, [addApplicationToUser, getApplications]);
 
-    return <ApplicationDashboard
-        error={error}
-        loading={loading}
-        applications={applications} />;
+    return (
+        <ApplicationDashboard
+            error={error}
+            loading={loading}
+            applications={applications}
+        />
+    );
 };
 
 export default ApplicationDashboard;
