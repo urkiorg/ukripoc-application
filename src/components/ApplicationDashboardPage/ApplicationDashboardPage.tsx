@@ -8,7 +8,6 @@ import { getFundingApplication } from "../../graphql/queries";
 import { useQuery } from "react-apollo-hooks";
 import { CreateFundingApplicationMutation } from "../../API";
 import { createFundingApplication } from "../../graphql/mutations";
-
 import { OpportunityWithApplication } from "../../types";
 
 interface Props extends RouteComponentProps {}
@@ -62,13 +61,12 @@ export const ApplicationDashboardPage: FC<Props> = (props) => {
         
         if (opportunityId) {
             const opportunityWithApplication = async (opportunityId: string) => {
-                let opportunityWithApplication
                 try {
                     // Hard code the full url
-                    opportunityWithApplication = await fetch(`/opportunity-listing/retrieve/${opportunityId}`)
+                    let response = await fetch(`/opportunity-listing/retrieve/${opportunityId}`)
                     setLoading(false);
                     setError(false);
-                    return opportunityWithApplication;
+                    return response.json();
                 } catch(error) {
                     setLoading(false);
                     setError(true);
