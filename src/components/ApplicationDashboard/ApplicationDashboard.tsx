@@ -18,6 +18,7 @@ import { ListFundingApplicationsQuery } from "../../API";
 import { daysLeft, friendlyDate } from "../../lib/dateandtime";
 
 import P from "@govuk-react/paragraph";
+import { DateandtimeReturnType } from "../../types";
 
 export const ApplicationContainer = styled.div`
     background: ${GREY_3};
@@ -46,20 +47,6 @@ export const ApplicationContainerTimeline = styled.div`
     text-align: center;
 `;
 
-interface Typed {
-    time?: number;
-    prefix?: string;
-}
-
-function showDaysLeft(closeDate: string | null) {
-    const result: Typed = { ...daysLeft(closeDate) };
-    return (
-        <>
-            <H4 mb={1}>{result.time}</H4>
-            <P mb={1}>{result.prefix}</P>
-        </>
-    );
-}
 interface Props extends RouteComponentProps {
     applications?: ListFundingApplicationsQuery; //change when not mocked
 }
@@ -85,6 +72,15 @@ export const ApplicationDashboard: FC<Props> = props => {
                         if (!application) {
                             return null;
                         }
+
+                        const result: DateandtimeReturnType = {
+                            ...daysLeft(application.closeDate)
+                        };
+
+                        const closeDate: string | null = friendlyDate(
+                            application.closeDate
+                        );
+
                         return (
                             <ApplicationContainerItem key={application.id}>
                                 <GridRow>
@@ -103,18 +99,14 @@ export const ApplicationDashboard: FC<Props> = props => {
 
                                         <GridRow>
                                             Opportunity:
-                                            {application.id}
+                                            {application.opportunityDescription}
                                         </GridRow>
                                     </GridCol>
                                     <GridCol setWidth="25%">
                                         <ApplicationContainerTimeline>
-                                            {showDaysLeft(
-                                                application.closeDate
-                                            )}
-                                            Deadline{" "}
-                                            {friendlyDate(
-                                                application.closeDate
-                                            )}
+                                            <H4 mb={1}>{result.timeToShow}</H4>
+                                            <P mb={1}>{result.prefixToShow}</P>
+                                            Deadline {closeDate}
                                         </ApplicationContainerTimeline>
                                     </GridCol>
                                     <GridCol setWidth="25%">

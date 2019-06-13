@@ -1,4 +1,4 @@
-export function daysLeft(date: string | null) {
+export const daysLeft = (date: string | null) => {
     if (!date) {
         return false;
     }
@@ -26,17 +26,18 @@ export function daysLeft(date: string | null) {
         prefixToShow = "Ended";
     }
 
-    const result = { time: timeToShow, prefix: prefixToShow };
+    return { timeToShow, prefixToShow };
+};
 
-    return result;
-}
-
-export function friendlyDate(date: string | null) {
+export const friendlyDate = (date: string | null) => {
     return (
         date &&
-        new Date(date).toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "long"
-        })
+        new Date(date).toLocaleDateString(
+            "en-GB",
+            {
+                day: "numeric",
+                month: "long"
+            } || ""
+        )
     );
-}
+};
