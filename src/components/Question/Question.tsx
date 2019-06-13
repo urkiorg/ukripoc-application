@@ -77,10 +77,6 @@ export const Question: FC<Props> = ({
         ]
     );
 
-    if (!q) {
-        return <div> Loading... </div>;
-    }
-
     function onInputChange(event: string) {
         const textAreaValue = event;
         if (textAreaValue.length <= wordLimit) {
