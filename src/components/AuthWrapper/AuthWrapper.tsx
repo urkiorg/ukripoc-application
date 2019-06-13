@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Router } from "@reach/router";
-import { ApplicationDashboard } from "../ApplicationDashboard";
 import { LoginScreen } from "../LoginScreen";
 import { ApplyPage } from "../ApplyPage";
 import { CreateAccountPage } from "../CreateAccountPage";
@@ -8,6 +7,7 @@ import { AuthenticatorProps } from "../../lib/account";
 import { MaybeAccount } from "../MaybeAccount";
 import { AuthRedirector } from "../AuthRedirector";
 import { ConfirmSignUp } from "../ConfirmSignUp";
+import { ApplicationDashboardPage } from "../ApplicationDashboardPage";
 
 interface Props extends AuthenticatorProps {}
 
@@ -18,7 +18,7 @@ export const AuthWrapper: FC<Props> = props => {
             <Router>
                 <AuthRedirector default authProps={props} />
                 {props.authState === "signedIn" ? (
-                    <ApplicationDashboard path="/" />
+                    <ApplicationDashboardPage path="/" />
                 ) : (
                     <MaybeAccount authProps={props} path="/" />
                 )}

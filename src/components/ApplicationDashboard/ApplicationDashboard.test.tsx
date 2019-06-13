@@ -6,6 +6,5 @@ describe("ApplicationDashboard", () => {
     it("renders correctly", () => {
         const tree = renderer.create(<ApplicationDashboard />).toJSON();
         expect(tree).toMatchSnapshot();
-    })
+    });
 });
-
