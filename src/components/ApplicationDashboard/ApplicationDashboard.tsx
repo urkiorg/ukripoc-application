@@ -101,8 +101,16 @@ export const ApplicationDashboard: FC<Props> = props => {
                                     </GridCol>
                                     <GridCol setWidth="25%">
                                         <ApplicationContainerTimeline>
-                                            <H4 mb={1}>{result.timeToShow}</H4>
-                                            <P mb={1}>{result.prefixToShow}</P>
+                                            {result && (
+                                                <>
+                                                    <H4 mb={1}>
+                                                        {result.timeToShow}
+                                                    </H4>
+                                                    <P mb={1}>
+                                                        {result.prefixToShow}
+                                                    </P>
+                                                </>
+                                            )}
                                             Deadline {closeDate}
                                         </ApplicationContainerTimeline>
                                     </GridCol>
