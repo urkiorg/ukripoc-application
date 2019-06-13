@@ -1,17 +1,12 @@
 import React, { FC } from "react";
-
 import Link from "@govuk-react/link";
 import { RouteComponentProps, Link as RouterLink } from "@reach/router";
-
 import { Title } from "ukripoc-components";
-
+import { GREY_3, GREY_2 } from "govuk-colours";
 import { H4 } from "@govuk-react/heading";
 import { NTA_LIGHT } from "@govuk-react/constants";
-import { GREY_3, GREY_2 } from "govuk-colours";
-
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
-
 import styled from "styled-components";
 
 export const ApplicationContainer = styled.div`
@@ -45,50 +40,46 @@ interface Props extends RouteComponentProps {
     applications: any;
 }
 
-export const ApplicationDashboard: FC<Props> = props => {
-    console.log(props.applications);
+const daysLeft = (date: string) => {
+    const closeDate = new Date(date);
+    const closeDateTime = closeDate.getTime();
+    const today = new Date();
+    const timeToday = today.getTime();
+    const timeleftBig = closeDateTime - timeToday;
+    const timeLeft = Math.floor(timeleftBig / 1000 / 60 / 60);
 
-    function daysLeft(date: string) {
-        const closeDate = new Date(date);
-        const closeDateTime = closeDate.getTime();
-        const today = new Date();
-        const timeToday = today.getTime();
-        const timeleftBig = closeDateTime - timeToday;
-        const timeLeft = Math.floor(timeleftBig / 1000 / 60 / 60);
+    let timeToShow = timeLeft;
+    let prefixToShow = "Hours";
 
-        let timeToShow = timeLeft;
-        let prefixToShow = "Hours";
-
-        if (timeLeft > 24 && timeLeft < 48) {
-            timeToShow = Math.floor(timeLeft / 24);
-            prefixToShow = "Day left";
-        } else if (timeLeft > 47) {
-            //2days etc...
-            timeToShow = Math.floor(timeLeft / 24);
-            prefixToShow = "Days left";
-        } else if (timeLeft === 1) {
-            prefixToShow = "Hour left";
-        } else if (timeLeft < 0) {
-            timeToShow = 0;
-            prefixToShow = "Ended";
-        }
-
-        return (
-            <>
-                <H4 mb={0}>{timeToShow}</H4>
-                <span>{prefixToShow}</span>
-            </>
-        );
-    }
-
-    function friendlyDate(date: string) {
-        return new Date(date).toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "long"
-        });
+    if (timeLeft > 24 && timeLeft < 48) {
+        timeToShow = Math.floor(timeLeft / 24);
+        prefixToShow = "Day left";
+    } else if (timeLeft > 47) {
+        //2days etc...
+        timeToShow = Math.floor(timeLeft / 24);
+        prefixToShow = "Days left";
+    } else if (timeLeft === 1) {
+        prefixToShow = "Hour left";
+    } else if (timeLeft < 0) {
+        timeToShow = 0;
+        prefixToShow = "Ended";
     }
 
     return (
+        <>
+            <H4 mb={0}>{timeToShow}</H4>
+            <span>{prefixToShow}</span>
+        </>
+    );
+}
+
+const friendlyDate = (date: string) => 
+new Date(date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long"
+});
+
+export const ApplicationDashboard: FC<Props> = props => 
         <>
             <Title>Dashboard</Title>
             <ApplicationContainer>
@@ -138,7 +129,5 @@ export const ApplicationDashboard: FC<Props> = props => {
                     })}
             </ApplicationContainer>
         </>
-    );
-};
 
 export default ApplicationDashboard;
