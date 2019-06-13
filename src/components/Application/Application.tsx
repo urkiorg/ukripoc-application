@@ -36,7 +36,7 @@ export const Application: FC<Props> = props => {
     const application = props.application.getFundingApplication;
 
     if (!application) {
-        return <LoadingBox loading={application}></LoadingBox>;
+        return null;
     }
 
     return (
@@ -90,7 +90,7 @@ export const Application: FC<Props> = props => {
                         application.fundingApplicationQuestions.items.map(
                             question => {
                                 if (!question) {
-                                    return <div> aa </div>;
+                                    return null;
                                 }
 
                                 return (
@@ -106,7 +106,7 @@ export const Application: FC<Props> = props => {
                                         <Table.Cell>
                                             {question.complete
                                                 ? "Complete"
-                                                : "incomplete"}
+                                                : "Incomplete"}
                                         </Table.Cell>
                                     </Table.Row>
                                 );
