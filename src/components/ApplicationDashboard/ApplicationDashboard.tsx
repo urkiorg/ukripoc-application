@@ -104,10 +104,10 @@ export const ApplicationDashboard: FC<Props> = props => {
                                             {timeLeft && (
                                                 <>
                                                     <H4 mb={1}>
-                                                        {timeLeft.timeToShow}
+                                                        {timeLeft.time}
                                                     </H4>
                                                     <P mb={1}>
-                                                        {timeLeft.prefixToShow}
+                                                        {timeLeft.suffix}
                                                     </P>
                                                 </>
                                             )}

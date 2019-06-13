@@ -10,23 +10,23 @@ export const daysLeft = (date: string | null) => {
     const timeleftBig = closeDateTime - timeToday;
     const timeLeft = Math.floor(timeleftBig / 1000 / 60 / 60);
 
-    let timeToShow = timeLeft;
-    let prefixToShow = "Hours";
+    let time = timeLeft;
+    let suffix = "Hours";
 
     if (timeLeft > 24 && timeLeft < 48) {
-        timeToShow = Math.floor(timeLeft / 24);
-        prefixToShow = "Day left";
+        time = Math.floor(timeLeft / 24);
+        suffix = "Day left";
     } else if (timeLeft > 47) {
-        timeToShow = Math.floor(timeLeft / 24);
-        prefixToShow = "Days left";
+        time = Math.floor(timeLeft / 24);
+        suffix = "Days left";
     } else if (timeLeft === 1) {
-        prefixToShow = "Hour left";
+        suffix = "Hour left";
     } else if (timeLeft < 0) {
-        timeToShow = 0;
-        prefixToShow = "Ended";
+        time = 0;
+        suffix = "Ended";
     }
 
-    return { timeToShow, prefixToShow };
+    return { time, suffix };
 };
 
 export const friendlyDate = (date: string | null) => {
