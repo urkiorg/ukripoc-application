@@ -5,7 +5,10 @@ import { ApplicationDashboard } from "./index";
 describe("ApplicationDashboard", () => {
     it("renders correctly", () => {
         const tree = renderer
-            .create(<ApplicationDashboard applications={() => ""} />)
+            .create(<ApplicationDashboard
+                loading={false}
+                error={false}
+                applications={[]} />)
             .toJSON();
         expect(tree).toMatchSnapshot();
     });

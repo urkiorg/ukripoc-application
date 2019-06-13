@@ -3,5 +3,8 @@ import { storiesOf } from "@storybook/react";
 import { ApplicationDashboard } from "./index";
 
 storiesOf("Components|ApplicationDashboard", module).add("Default", () => (
-    <ApplicationDashboard applications={() => ""} />
+    <ApplicationDashboard
+        loading={false}
+        error={false}
+        applications={[]} />
 ));

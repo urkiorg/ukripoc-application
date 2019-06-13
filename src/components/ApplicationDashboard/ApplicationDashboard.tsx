@@ -8,6 +8,8 @@ import { NTA_LIGHT } from "@govuk-react/constants";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import styled from "styled-components";
+import LoadingBox from "@govuk-react/loading-box";
+import { FundingApplications, FundingApplication } from "../../types";
 
 export const ApplicationContainer = styled.div`
     background: ${GREY_3};
@@ -37,7 +39,9 @@ export const ApplicationContainerTimeline = styled.div`
 `;
 
 interface Props extends RouteComponentProps {
-    applications: any;
+    applications: FundingApplications;
+    loading: boolean;
+    error: boolean;
 }
 
 const daysLeft = (date: string) => {
@@ -71,63 +75,82 @@ const daysLeft = (date: string) => {
             <span>{prefixToShow}</span>
         </>
     );
-}
+};
 
-const friendlyDate = (date: string) => 
-new Date(date).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long"
-});
+const friendlyDate = (date: string) =>
+    new Date(date).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long"
+    });
 
-export const ApplicationDashboard: FC<Props> = props => 
-        <>
-            <Title>Dashboard</Title>
-            <ApplicationContainer>
-                <H4 mb={1}> Applications </H4>
-                <span> In progress ( {props.applications.length} )</span>
-                {props.applications &&
-                    props.applications.length &&
-                    props.applications.map((application: any) => {
-                        return (
-                            <ApplicationContainerItem key={application.id}>
-                                <GridRow>
-                                    <GridCol setWidth="50%">
-                                        <Link
-                                            as={RouterLink}
-                                            to={`application/${application.id}`}
-                                        >
-                                            {application.name}
-                                        </Link>
-                                        <div>
-                                            Application number:
-                                            {application.number}
-                                        </div>
-                                        <div>
-                                            Opportunity:
-                                            {application.Opportunity.name}
-                                        </div>
-                                    </GridCol>
-                                    <GridCol setWidth="25%">
-                                        <ApplicationContainerTimeline>
-                                            {daysLeft(application.closeDate)}
-                                            <div>
-                                                Deadline{" "}
-                                                {friendlyDate(
-                                                    application.closeDate
-                                                )}
-                                            </div>
-                                        </ApplicationContainerTimeline>
-                                    </GridCol>
-                                    <GridCol setWidth="25%">
-                                        <ApplicationContainerItemComplete>
-                                            0% complete
-                                        </ApplicationContainerItemComplete>
-                                    </GridCol>
-                                </GridRow>
-                            </ApplicationContainerItem>
-                        );
-                    })}
-            </ApplicationContainer>
-        </>
+const renderApplications = (applications: FundingApplications) => (
+    <React.Fragment>
+        <span> In progress ( {applications.length} )</span>
+        {applications &&
+            applications.length &&
+            applications.map((application: FundingApplication) => {
+                return (
+                    <ApplicationContainerItem key={application.id}>
+                        <GridRow>
+                            <GridCol setWidth="50%">
+                                <Link
+                                    as={RouterLink}
+                                    to={`application/${application.id}`}
+                                >
+                                    {application.opportunityName}
+                                </Link>
+                                <div>
+                                    Application number:
+                                    {application.number}
+                                </div>
+                                <div>
+                                    Opportunity:
+                                    {application.opportunityName}
+                                </div>
+                            </GridCol>
+                            <GridCol setWidth="25%">
+                                <ApplicationContainerTimeline>
+                                    {daysLeft(application.closeDate)}
+                                    <div>
+                                        Deadline{" "}
+                                        {friendlyDate(application.closeDate)}
+                                    </div>
+                                </ApplicationContainerTimeline>
+                            </GridCol>
+                            <GridCol setWidth="25%">
+                                <ApplicationContainerItemComplete>
+                                    0% complete
+                                </ApplicationContainerItemComplete>
+                            </GridCol>
+                        </GridRow>
+                    </ApplicationContainerItem>
+                );
+            })}
+    </React.Fragment>
+);
+
+const renderNoApplications = () => <div>You do not have any applications</div>;
+
+export const ApplicationDashboard: FC<Props> = ({
+    applications,
+    loading,
+    error
+}) => (
+    <>
+        <Title>Dashboard</Title>
+        <LoadingBox loading={loading}>
+            {!error ? (
+                <ApplicationContainer>
+                    <H4 mb={1}> Applications </H4>
+                    {applications && applications.length > 0
+                        ? renderApplications(applications)
+                        : renderNoApplications()}
+                </ApplicationContainer>
+            ) : (
+                <div>Sorry, we are unable to show your applications.</div>
+            )}
+        </LoadingBox>
+    </>
+);
 
 export default ApplicationDashboard;
