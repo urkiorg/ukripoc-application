@@ -72,7 +72,7 @@ export const ApplicationDashboard: FC<Props> = props => {
                             return null;
                         }
 
-                        const result = daysLeft(application.closeDate);
+                        const timeLeft = daysLeft(application.closeDate);
 
                         const closeDate: string | null = friendlyDate(
                             application.closeDate
@@ -101,13 +101,13 @@ export const ApplicationDashboard: FC<Props> = props => {
                                     </GridCol>
                                     <GridCol setWidth="25%">
                                         <ApplicationContainerTimeline>
-                                            {result && (
+                                            {timeLeft && (
                                                 <>
                                                     <H4 mb={1}>
-                                                        {result.timeToShow}
+                                                        {timeLeft.timeToShow}
                                                     </H4>
                                                     <P mb={1}>
-                                                        {result.prefixToShow}
+                                                        {timeLeft.prefixToShow}
                                                     </P>
                                                 </>
                                             )}
