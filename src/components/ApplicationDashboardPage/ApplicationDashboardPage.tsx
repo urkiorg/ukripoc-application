@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState, useCallback } from "react";
 import { RouteComponentProps } from "@reach/router";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo-hooks";
@@ -32,27 +32,29 @@ const formatApplication = (opportunityWithApplication: OpportunityWithApplicatio
     }
 }
 
-const putFundingApplication = useMutation<
-    CreateFundingApplicationMutation
-    >(UPDATE_USERS_APPLICATIONS);
-
-const addApplicationToUser = async (opportunityWithApplication: OpportunityWithApplication) => {
-    const fundingApplications = formatApplication(opportunityWithApplication);
-    await putFundingApplication({
-        variables: {
-            input: fundingApplications
-        }
-    });
-}
-
-// What is the endpoint?
-const getApplications = useQuery<GetFundingApplicationQuery>(GET_APPLICATION).data;
-
 export const ApplicationDashboardPage: FC<Props> = (props) => {
 
     const [applications, setApplications] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const putFundingApplication = useMutation<
+        CreateFundingApplicationMutation
+        >(UPDATE_USERS_APPLICATIONS);
+
+    // What is the endpoint?
+    const getApplications = useQuery<GetFundingApplicationQuery>(GET_APPLICATION).data;
+
+    const addApplicationToUser = useCallback(
+        async (opportunityWithApplication: OpportunityWithApplication) => {
+            await putFundingApplication({
+                    variables: {
+                    input: formatApplication(opportunityWithApplication)
+                }
+            })
+        },
+        [putFundingApplication]
+    );
     
     useEffect (() => {
         setLoading(true);
@@ -73,17 +75,19 @@ export const ApplicationDashboardPage: FC<Props> = (props) => {
                 }
             };
             
+            // @ts-ignore
             addApplicationToUser(opportunityWithApplication(opportunityId));
 
             window.localStorage.removeItem("opportunityId");
         }
 
         if (getApplications) {
+                        // @ts-ignore
             setApplications(getApplications);
         }
 
         setLoading(false);
-    }, []);
+    }, [addApplicationToUser, getApplications]);
 
     return <ApplicationDashboard
         error={error}
