@@ -77,23 +77,26 @@ export const Question: FC<Props> = ({
         ]
     );
 
-    function onInputChange(event: string) {
-        const textAreaValue = event;
-        if (textAreaValue.length <= wordLimit) {
-            const newWordsRemaining = wordLimit - event.length;
-            setWordsRemaining(newWordsRemaining);
-            setQuestionForm({
-                ...questionForm,
-                applicationCase: textAreaValue
-            });
-            setValidForm(true);
-        } else {
-            const newWordsRemaining = wordLimit - event.length;
-            setWordsRemaining(newWordsRemaining);
-            setValidForm(false);
-            return "Invalid";
-        }
-    }
+    const onInputChange = useCallback(
+        async (event: string) => {
+            const textAreaValue = event;
+            if (textAreaValue.length <= wordLimit) {
+                const newWordsRemaining = wordLimit - event.length;
+                setWordsRemaining(newWordsRemaining);
+                setQuestionForm({
+                    ...questionForm,
+                    applicationCase: textAreaValue
+                });
+                setValidForm(true);
+            } else {
+                const newWordsRemaining = wordLimit - event.length;
+                setWordsRemaining(newWordsRemaining);
+                setValidForm(false);
+                return "Invalid";
+            }
+        },
+        [questionForm, wordLimit]
+    );
 
     return (
         <>
