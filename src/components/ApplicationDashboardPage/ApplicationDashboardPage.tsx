@@ -63,6 +63,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
 
     const getOpportunityWithApplication = async (opportunityId: string) => {
         try {
+            // Update the hard coded url
             let response = await fetch(
                 `http://localhost:3000/opportunity/retrieve/${opportunityId}`
             );
