@@ -35,15 +35,12 @@ export type FundingApplications = Array<FundingApplication>;
 
 export interface FundingApplication {
     id: string;
-    owner: string;
     ownerName: string;
     opportunityName: string!;
     opportunityDescription: string;
-    opportunityFunders: [string];
+    opportunityFunders: string[];
     openDate: string;
     closeDate: string;
-    fundingApplicationQuestions: [FundingApplicationQuestion];
-    number: integer;
 }
 
 export interface FundingApplicationQuestion {

@@ -3,26 +3,25 @@ import { RouteComponentProps } from "@reach/router";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo-hooks";
 import { ApplicationDashboard } from "../ApplicationDashboard";
-import { GetFundingApplicationQuery } from "../../API";
+import { GetFundingApplicationQuery, CreateFundingApplicationMutation } from "../../API";
 import { getFundingApplication } from "../../graphql/queries";
 import { useQuery } from "react-apollo-hooks";
-import { CreateFundingApplicationMutation } from "../../API";
 import { createFundingApplication } from "../../graphql/mutations";
-import { OpportunityWithApplication } from "../../types";
+import { OpportunityWithApplication, FundingApplication } from "../../types";
+
 
 interface Props extends RouteComponentProps {}
 
 const GET_APPLICATION = gql(getFundingApplication);
 const UPDATE_USERS_APPLICATIONS = gql(createFundingApplication);
 
-const formatApplication = (opportunityWithApplication: any) => {
+const formatApplication = (opportunityWithApplication: OpportunityWithApplication):FundingApplication => {
     const { name, description } = opportunityWithApplication;
     const { lowestRankedApplication } = opportunityWithApplication;
     const {
         id,
         openApplication,
         closeApplication,
-        questions
     } = lowestRankedApplication;
 
     // need dynamic opportunityFunders and number
@@ -30,11 +29,10 @@ const formatApplication = (opportunityWithApplication: any) => {
         id,
         opportunityName: name,
         opportunityDescription: description,
-        opportunityFunders: "",
+        opportunityFunders: [],
         openDate: openApplication,
         closeDate: closeApplication,
-        fundingApplicationQuestions: questions || [],
-        number: 0
+        ownerName: "Owner",
     };
 };
 
@@ -66,11 +64,11 @@ export const ApplicationDashboardPage: FC<Props> = props => {
     const getOpportunityWithApplication = async (opportunityId: string) => {
         try {
             let response = await fetch(
-                `/opportunity-listing/retrieve/${opportunityId}`
+                `http://localhost:3000/opportunity/retrieve/${opportunityId}`
             );
             return response.json() || "";
         } catch (error) {
-            console.log("error");
+            console.log("error: ", error);
         }
     };
 
@@ -84,7 +82,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
                     await addApplicationToUser(opportunityWithApplication);
                     window.localStorage.removeItem("opportunityId");
                 } catch (error) {
-                    console.log("error");
+                    console.log("error:", error);
                 }
             })();
         },

@@ -101,7 +101,7 @@ const renderApplications = (applications: FundingApplications) => (
                                 </Link>
                                 <div>
                                     Application number:
-                                    {application.number}
+                                    {/* {application.number} */}
                                 </div>
                                 <div>
                                     Opportunity:
