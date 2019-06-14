@@ -27,6 +27,12 @@ export const MarkAsComplete = styled.div`
     margin: 20px 0;
 `;
 
+export const WordCounter = styled.span`
+    display: block;
+    font-family: ${NTA_LIGHT};
+    margin-bottom: 25px;
+`;
+
 interface Form {
     applicationCase: string;
     complete: boolean;
@@ -125,8 +131,7 @@ export const Question: FC<Props> = ({
                     <FormGroup error={!validForm}>
                         {!validForm && (
                             <ErrorText>
-                                {" "}
-                                Please ensure the text is within the word limit{" "}
+                                Please ensure the text is within the word limit
                             </ErrorText>
                         )}
                         <TextArea
@@ -137,7 +142,7 @@ export const Question: FC<Props> = ({
                         />
                     </FormGroup>
 
-                    <div>Words remaining: {wordsRemaining}</div>
+                    <WordCounter>Words remaining: {wordsRemaining}</WordCounter>
 
                     <MarkAsComplete>
                         <Checkbox
