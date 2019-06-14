@@ -108,10 +108,13 @@ export const ApplicationDashboardPage: FC<Props> = props => {
                 getAndPutApplication(opportunityId);
             }
 
-            const userApplications = getUserApplications();
-            if (userApplications) {
-                setApplications(userApplications);
-            }
+            getUserApplications()
+            .then((response) => {
+                console.log("response: ", response)
+                if (response) {
+                    setApplications(response);
+                }
+            })
 
             setApplicationsReturned(true);
             setLoading(false);
