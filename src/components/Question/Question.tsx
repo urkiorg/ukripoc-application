@@ -117,10 +117,7 @@ export const Question: FC<Props> = ({
                 <Caption size="M" mb={1}>
                     Provide your case for support
                 </Caption>
-                <Details
-                    mb={3}
-                    summary="What should I include in case for support section?"
-                >
+                <Details mb={3} summary="this section">
                     {q && q.notes}
                 </Details>
                 <form onSubmit={onSubmit}>
