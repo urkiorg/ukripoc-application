@@ -14,9 +14,8 @@ interface Props extends RouteComponentProps {}
 
 const GET_APPLICATION = gql(getFundingApplication);
 const UPDATE_USERS_APPLICATIONS = gql(createFundingApplication);
-const formatApplication = (
-    opportunityWithApplication: OpportunityWithApplication
-) => {
+
+const formatApplication = (opportunityWithApplication: any) => {
     const { name, description } = opportunityWithApplication;
     const { lowestRankedApplication } = opportunityWithApplication;
     const {
@@ -34,7 +33,7 @@ const formatApplication = (
         opportunityFunders: "",
         openDate: openApplication,
         closeDate: closeApplication,
-        fundingApplicationQuestions: questions,
+        fundingApplicationQuestions: questions || [],
         number: 0
     };
 };
@@ -47,9 +46,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
     const putFundingApplication = useMutation<CreateFundingApplicationMutation>(
         UPDATE_USERS_APPLICATIONS
     );
-
-    // What is the endpoint?
-    const getApplications = useQuery<GetFundingApplicationQuery>(
+    const userApplications = useQuery<GetFundingApplicationQuery>(
         GET_APPLICATION
     ).data;
 
@@ -64,42 +61,60 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         [putFundingApplication]
     );
 
+    const getOpportunityWithApplication = async (opportunityId: string) => {
+        try {
+            let response = await fetch(
+                `/opportunity-listing/retrieve/${opportunityId}`
+            );
+            return response.json() || "";
+        } catch (error) {
+            console.log("error");
+        }
+    };
+
+    const getAndPutApplication = useCallback(
+        (opportunityId: string) => {
+            (async () => {
+                try {
+                    const opportunityWithApplication = await getOpportunityWithApplication(
+                        opportunityId
+                    );
+                    await addApplicationToUser(opportunityWithApplication);
+                    window.localStorage.removeItem("opportunityId");
+                } catch (error) {
+                    console.log("error");
+                }
+            })();
+        },
+        [addApplicationToUser]
+    );
+
+    const getUserApplications = useCallback(async () => {
+        try {
+            await userApplications;
+        } catch (error) {
+            setError(true);
+        }
+    }, [userApplications]);
+
     useEffect(() => {
-        setLoading(true);
-        // Retrieve opportunity id from local storage, if present
         const opportunityId = window.localStorage.getItem("opportunityId");
+        setLoading(true);
 
         if (opportunityId) {
-            const opportunityWithApplication = async (
-                opportunityId: string
-            ) => {
-                try {
-                    // Hard code the full url
-                    let response = await fetch(
-                        `/opportunity-listing/retrieve/${opportunityId}`
-                    );
-                    setLoading(false);
-                    setError(false);
-                    return response.json();
-                } catch (error) {
-                    setLoading(false);
-                    setError(true);
-                }
-            };
-
-            // @ts-ignore
-            addApplicationToUser(opportunityWithApplication(opportunityId));
-
-            window.localStorage.removeItem("opportunityId");
+            getAndPutApplication(opportunityId);
         }
 
-        if (getApplications) {
+        if (getUserApplications()) {
             // @ts-ignore
-            setApplications(getApplications);
+            setApplications(getUserApplications);
         }
 
         setLoading(false);
-    }, [addApplicationToUser, getApplications]);
+
+        // Only want this to run once
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <ApplicationDashboard
