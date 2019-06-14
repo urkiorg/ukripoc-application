@@ -5,12 +5,13 @@ import { RouteComponentProps, Link as RouterLink } from "@reach/router";
 
 import { Title } from "ukripoc-components";
 
-import { H3, H6 } from "@govuk-react/heading";
+import { H3 } from "@govuk-react/heading";
 import Caption from "@govuk-react/caption";
 import Table from "@govuk-react/table";
 import { NTA_LIGHT } from "@govuk-react/constants";
 import { GREY_4 } from "govuk-colours";
 
+import Label from "@govuk-react/label-text";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import Breadcrumbs from "@govuk-react/breadcrumbs";
@@ -54,12 +55,12 @@ export const Application: FC<Props> = props => {
                     <GridRow>
                         <GridCol setWidth="33%">
                             <GridRow>
-                                <H6 mb={1}>Application number:</H6>
+                                <Label mb={1}>Application number:</Label>
                             </GridRow>
                             <GridRow mb={5}>{application.id}</GridRow>
 
                             <GridRow>
-                                <H6 mb={1}>Opportunity:</H6>
+                                <Label mb={1}>Opportunity:</Label>
                             </GridRow>
                             <GridRow>
                                 {application.opportunityDescription}
@@ -67,13 +68,13 @@ export const Application: FC<Props> = props => {
                         </GridCol>
                         <GridCol setWidth="33%">
                             <GridRow>
-                                <H6 mb={1}>Funding body:</H6>
+                                <Label mb={1}>Funding body:</Label>
                             </GridRow>
                             <GridRow mb={5}>
                                 / {application.opportunityFunders}
                             </GridRow>
                             <GridRow>
-                                <H6 mb={1}>Application deadline: </H6>
+                                <Label mb={1}>Application deadline: </Label>
                             </GridRow>
                             <GridRow>{application.closeDate}</GridRow>
                         </GridCol>
