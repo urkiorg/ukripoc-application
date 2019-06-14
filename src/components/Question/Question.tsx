@@ -44,7 +44,7 @@ interface Props extends RouteComponentProps {
         complete: boolean
     ) => void;
 
-    question: GetFundingApplicationQuestionQuery;
+    question: GetFundingApplicationQuestionQuery | undefined;
 }
 export const Question: FC<Props> = ({
     question,
@@ -55,7 +55,7 @@ export const Question: FC<Props> = ({
         applicationCase: ""
     };
 
-    const q = question.getFundingApplicationQuestion;
+    const q = question && question.getFundingApplicationQuestion;
 
     const [questionForm, setQuestionForm] = useState(initialState);
 
@@ -111,10 +111,7 @@ export const Question: FC<Props> = ({
             </Breadcrumbs>
 
             <LoadingBox loading={false}>
-                <Caption mb={1}>
-                    {question.getFundingApplicationQuestion &&
-                        question.getFundingApplicationQuestion.heading}{" "}
-                </Caption>
+                <Caption mb={1}>{q && q.heading}</Caption>
                 <Title mb={7}>Case for support</Title>
 
                 <Caption size="M" mb={1}>
@@ -124,8 +121,7 @@ export const Question: FC<Props> = ({
                     mb={3}
                     summary="What should I include in case for support section?"
                 >
-                    {question.getFundingApplicationQuestion &&
-                        question.getFundingApplicationQuestion.notes}
+                    {q && q.notes}
                 </Details>
                 <form onSubmit={onSubmit}>
                     <FormGroup error={!validForm}>
