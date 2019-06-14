@@ -39,13 +39,15 @@ const formatApplication = (opportunityWithApplication: any) => {
 };
 
 export const ApplicationDashboardPage: FC<Props> = props => {
-    const [applications, setApplications] = useState([]);
+    const [applications, setApplications] = useState();
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [applicationsReturned, setApplicationsReturned] = useState(false);
 
     const putFundingApplication = useMutation<CreateFundingApplicationMutation>(
         UPDATE_USERS_APPLICATIONS
     );
+
     const userApplications = useQuery<GetFundingApplicationQuery>(
         GET_APPLICATION
     ).data;
@@ -91,30 +93,31 @@ export const ApplicationDashboardPage: FC<Props> = props => {
 
     const getUserApplications = useCallback(async () => {
         try {
-            await userApplications;
+            const applications = await userApplications;
+            return applications;
         } catch (error) {
             setError(true);
         }
     }, [userApplications]);
 
     useEffect(() => {
-        const opportunityId = window.localStorage.getItem("opportunityId");
-        setLoading(true);
+        if (!applicationsReturned) { 
+            const opportunityId = window.localStorage.getItem("opportunityId");
+            setLoading(true);
 
-        if (opportunityId) {
-            getAndPutApplication(opportunityId);
+            if (opportunityId) {
+                getAndPutApplication(opportunityId);
+            }
+
+            const userApplications = getUserApplications();
+            if (userApplications) {
+                setApplications(userApplications);
+            }
+
+            setApplicationsReturned(true);
+            setLoading(false);
         }
-
-        if (getUserApplications()) {
-            // @ts-ignore
-            setApplications(getUserApplications);
-        }
-
-        setLoading(false);
-
-        // Only want this to run once
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    },[applicationsReturned, getAndPutApplication, getUserApplications]);
 
     return (
         <ApplicationDashboard
