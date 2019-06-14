@@ -13,6 +13,11 @@ import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 
 import styled from "styled-components";
+import { ListFundingApplicationsQuery } from "../../API";
+
+import { daysLeft, friendlyDate } from "../../lib/dateandtime";
+
+import P from "@govuk-react/paragraph";
 
 export const ApplicationContainer = styled.div`
     background: ${GREY_3};
@@ -42,61 +47,37 @@ export const ApplicationContainerTimeline = styled.div`
 `;
 
 interface Props extends RouteComponentProps {
-    applications: any;
+    applications?: ListFundingApplicationsQuery; //change when not mocked
 }
 
 export const ApplicationDashboard: FC<Props> = props => {
-    console.log(props.applications);
-
-    function daysLeft(date: string) {
-        const closeDate = new Date(date);
-        const closeDateTime = closeDate.getTime();
-        const today = new Date();
-        const timeToday = today.getTime();
-        const timeleftBig = closeDateTime - timeToday;
-        const timeLeft = Math.floor(timeleftBig / 1000 / 60 / 60);
-
-        let timeToShow = timeLeft;
-        let prefixToShow = "Hours";
-
-        if (timeLeft > 24 && timeLeft < 48) {
-            timeToShow = Math.floor(timeLeft / 24);
-            prefixToShow = "Day left";
-        } else if (timeLeft > 47) {
-            //2days etc...
-            timeToShow = Math.floor(timeLeft / 24);
-            prefixToShow = "Days left";
-        } else if (timeLeft === 1) {
-            prefixToShow = "Hour left";
-        } else if (timeLeft < 0) {
-            timeToShow = 0;
-            prefixToShow = "Ended";
-        }
-
-        return (
-            <>
-                <H4 mb={0}>{timeToShow}</H4>
-                <span>{prefixToShow}</span>
-            </>
-        );
-    }
-
-    function friendlyDate(date: string) {
-        return new Date(date).toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "long"
-        });
-    }
+    const applications =
+        props.applications &&
+        props.applications.listFundingApplications &&
+        props.applications.listFundingApplications.items;
 
     return (
         <>
             <Title>Dashboard</Title>
             <ApplicationContainer>
                 <H4 mb={1}> Applications </H4>
-                <span> In progress ( {props.applications.length} )</span>
-                {props.applications &&
-                    props.applications.length &&
-                    props.applications.map((application: any) => {
+
+                <span>
+                    In progress ({applications ? applications.length : 0})
+                </span>
+
+                {applications &&
+                    applications.map(application => {
+                        if (!application) {
+                            return null;
+                        }
+
+                        const timeLeft = daysLeft(application.closeDate);
+
+                        const closeDate: string | null = friendlyDate(
+                            application.closeDate
+                        );
+
                         return (
                             <ApplicationContainerItem key={application.id}>
                                 <GridRow>
@@ -105,26 +86,32 @@ export const ApplicationDashboard: FC<Props> = props => {
                                             as={RouterLink}
                                             to={`application/${application.id}`}
                                         >
-                                            {application.name}
+                                            {application.opportunityName}
                                         </Link>
-                                        <div>
+
+                                        <GridRow>
                                             Application number:
-                                            {application.number}
-                                        </div>
-                                        <div>
+                                            {application.id}
+                                        </GridRow>
+
+                                        <GridRow>
                                             Opportunity:
-                                            {application.Opportunity.name}
-                                        </div>
+                                            {application.opportunityDescription}
+                                        </GridRow>
                                     </GridCol>
                                     <GridCol setWidth="25%">
                                         <ApplicationContainerTimeline>
-                                            {daysLeft(application.closeDate)}
-                                            <div>
-                                                Deadline{" "}
-                                                {friendlyDate(
-                                                    application.closeDate
-                                                )}
-                                            </div>
+                                            {timeLeft && (
+                                                <>
+                                                    <H4 mb={1}>
+                                                        {timeLeft.time}
+                                                    </H4>
+                                                    <P mb={1}>
+                                                        {timeLeft.suffix}
+                                                    </P>
+                                                </>
+                                            )}
+                                            Deadline {closeDate}
                                         </ApplicationContainerTimeline>
                                     </GridCol>
                                     <GridCol setWidth="25%">
