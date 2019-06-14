@@ -115,6 +115,8 @@ export const ApplicationDashboardPage: FC<Props> = props => {
             setApplicationsReturned(true);
             setLoading(false);
         }
+
+        // Linter is forcing me to add these. I only want to run this on mount.
     },[applicationsReturned, getAndPutApplication, getUserApplications]);
 
     return (
