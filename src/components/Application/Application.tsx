@@ -21,7 +21,7 @@ import { GetFundingApplicationQuery } from "../../API";
 import LoadingBox from "@govuk-react/loading-box";
 
 interface Props extends RouteComponentProps {
-    application: GetFundingApplicationQuery;
+    application: GetFundingApplicationQuery | undefined;
 }
 
 export const ApplicationSummary = styled.div`
@@ -33,7 +33,8 @@ export const ApplicationSummary = styled.div`
 `;
 
 export const Application: FC<Props> = props => {
-    const application = props.application.getFundingApplication;
+    const application =
+        props.application && props.application.getFundingApplication;
 
     if (!application) {
         return null;
