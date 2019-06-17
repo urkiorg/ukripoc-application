@@ -11,6 +11,10 @@ import Table from "@govuk-react/table";
 import { NTA_LIGHT } from "@govuk-react/constants";
 import { GREY_4 } from "govuk-colours";
 
+import { ukriGreen } from "ukripoc-components";
+
+import Button from "@govuk-react/button";
+
 import Label from "@govuk-react/label-text";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
@@ -25,6 +29,7 @@ import { friendlyDate } from "../../lib/dateandtime";
 
 interface Props extends RouteComponentProps {
     application: GetFundingApplicationQuery | undefined;
+    updateFundingApplication: () => void;
 }
 
 export const ApplicationSummary = styled.div`
@@ -44,6 +49,24 @@ export const Application: FC<Props> = props => {
     }
 
     const closeDate: string | null = friendlyDate(application.closeDate);
+
+    let isComplete = true;
+
+    application.fundingApplicationQuestions &&
+        application.fundingApplicationQuestions.items &&
+        application.fundingApplicationQuestions.items.forEach(question => {
+            if (!question) {
+                return null;
+            }
+
+            if (question.complete === false) {
+                isComplete = false;
+            }
+        });
+
+    const submitApplication = () => {
+        props.updateFundingApplication();
+    };
 
     return (
         <>
@@ -121,6 +144,15 @@ export const Application: FC<Props> = props => {
                             }
                         )}
                 </Table>
+
+                <Button
+                    mt={5}
+                    onClick={submitApplication}
+                    buttonColour={ukriGreen}
+                    disabled={!isComplete}
+                >
+                    Submit Application
+                </Button>
             </LoadingBox>
         </>
     );
