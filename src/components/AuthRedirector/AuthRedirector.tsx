@@ -8,7 +8,7 @@ interface Props extends RouteComponentProps {
 
 export const AuthRedirector: FC<Props> = ({ navigate, authProps }) => {
     if (!navigate || !authProps || !authProps.authState) return null;
-    let to = "/";
+    let to = "";
     switch (authProps.authState) {
         case "signUp":
             to = "/createaccount/organisation";
@@ -23,7 +23,10 @@ export const AuthRedirector: FC<Props> = ({ navigate, authProps }) => {
             break;
     }
     console.log("redirecting to", to);
-    navigate(to);
+    if (to !== "") {
+        navigate(to);
+    }
+
     return <p>{authProps.authState}</p>;
 };
 

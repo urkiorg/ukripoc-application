@@ -31,16 +31,16 @@ export interface OpportunityWithApplication {
 };
 
 // FundingApplications
-export type FundingApplications = Array<FundingApplication>;
+export type FundingApplications = Array<FundingApplication | null>;
 
 export interface FundingApplication {
     id: string;
-    ownerName: string;
+    ownerName: string | null;
     opportunityName: string!;
-    opportunityDescription: string;
-    opportunityFunders: string[];
-    openDate: string;
-    closeDate: string;
+    opportunityDescription: string | null;
+    opportunityFunders: (string | null) [] | null;
+    openDate: string | null;
+    closeDate: string | null;
 }
 
 export interface FundingApplicationQuestion {

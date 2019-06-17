@@ -11,6 +11,7 @@ import Table from "@govuk-react/table";
 import { NTA_LIGHT } from "@govuk-react/constants";
 import { GREY_4 } from "govuk-colours";
 
+import Label from "@govuk-react/label-text";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import Breadcrumbs from "@govuk-react/breadcrumbs";
@@ -21,7 +22,7 @@ import { GetFundingApplicationQuery } from "../../API";
 import LoadingBox from "@govuk-react/loading-box";
 
 interface Props extends RouteComponentProps {
-    application: GetFundingApplicationQuery;
+    application: GetFundingApplicationQuery | undefined;
 }
 
 export const ApplicationSummary = styled.div`
@@ -33,10 +34,11 @@ export const ApplicationSummary = styled.div`
 `;
 
 export const Application: FC<Props> = props => {
-    const application = props.application.getFundingApplication;
+    const application =
+        props.application && props.application.getFundingApplication;
 
     if (!application) {
-        return <LoadingBox loading={application}></LoadingBox>;
+        return null;
     }
 
     return (
@@ -53,12 +55,12 @@ export const Application: FC<Props> = props => {
                     <GridRow>
                         <GridCol setWidth="33%">
                             <GridRow>
-                                <strong>Application number:</strong>
+                                <Label mb={1}>Application number:</Label>
                             </GridRow>
                             <GridRow mb={5}>{application.id}</GridRow>
 
                             <GridRow>
-                                <strong>Opportunity:</strong>
+                                <Label mb={1}>Opportunity:</Label>
                             </GridRow>
                             <GridRow>
                                 {application.opportunityDescription}
@@ -66,13 +68,15 @@ export const Application: FC<Props> = props => {
                         </GridCol>
                         <GridCol setWidth="33%">
                             <GridRow>
-                                <strong>Funding body:</strong>
+                                <Label mb={1}>Funding body:</Label>
                             </GridRow>
                             <GridRow mb={5}>
-                                / {application.opportunityFunders}
+                                {application.opportunityFunders &&
+                                    !!application.opportunityFunders.length &&
+                                    application.opportunityFunders.join(", ")}
                             </GridRow>
                             <GridRow>
-                                <strong>Application deadline: </strong>
+                                <Label mb={1}>Application deadline: </Label>
                             </GridRow>
                             <GridRow>{application.closeDate}</GridRow>
                         </GridCol>
@@ -90,7 +94,7 @@ export const Application: FC<Props> = props => {
                         application.fundingApplicationQuestions.items.map(
                             question => {
                                 if (!question) {
-                                    return <div> aa </div>;
+                                    return null;
                                 }
 
                                 return (
@@ -106,7 +110,7 @@ export const Application: FC<Props> = props => {
                                         <Table.Cell>
                                             {question.complete
                                                 ? "Complete"
-                                                : "incomplete"}
+                                                : "Incomplete"}
                                         </Table.Cell>
                                     </Table.Row>
                                 );

@@ -35,38 +35,6 @@ export const QuestionPage: FC<Props> = props => {
         }
     );
 
-    console.log(data);
-
-    const v: GetFundingApplicationQuestionQuery = {
-        getFundingApplicationQuestion: {
-            __typename: "FundingApplicationQuestion",
-            id: "sdss",
-            owner: "string",
-            heading: "string",
-            title: "string",
-            subtitle: "string",
-            notes: "string",
-            wordLimit: 100,
-            fundingApplication: {
-                __typename: "FundingApplication",
-                id: "string",
-                owner: "string",
-                ownerName: "string",
-                opportunityName: "string",
-                opportunityDescription: "string",
-                opportunityFunders: ["no", "onw"],
-                openDate: "string",
-                closeDate: "string",
-                fundingApplicationQuestions: {
-                    __typename: "ModelFundingApplicationQuestionConnection",
-                    nextToken: "string"
-                }
-            },
-            answer: "string",
-            complete: false
-        }
-    };
-
     const updateFundingApplicationQuestion = useCallback(
         async (applicationCase: string, completed: boolean) => {
             const result = await updateFundingApplicationQuestionMutation({
@@ -91,7 +59,7 @@ export const QuestionPage: FC<Props> = props => {
     //todo replace with data when we dont need to mock
     return (
         <Question
-            question={v}
+            question={data}
             updateFundingApplicationQuestion={updateFundingApplicationQuestion}
         />
     );

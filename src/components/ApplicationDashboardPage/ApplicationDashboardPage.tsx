@@ -1,28 +1,31 @@
-import React, { FC, useEffect, useState, useCallback } from "react";
+import React, { FC, useEffect, useCallback } from "react";
 import { RouteComponentProps } from "@reach/router";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo-hooks";
 import { ApplicationDashboard } from "../ApplicationDashboard";
-import { GetFundingApplicationQuery, CreateFundingApplicationMutation } from "../../API";
-import { getFundingApplication } from "../../graphql/queries";
+
+import {
+    ListFundingApplicationsQuery,
+    CreateFundingApplicationMutation
+} from "../../API";
+import { listFundingApplications } from "../../graphql/queries";
+
 import { useQuery } from "react-apollo-hooks";
 import { createFundingApplication } from "../../graphql/mutations";
 import { OpportunityWithApplication, FundingApplication } from "../../types";
 
-
 interface Props extends RouteComponentProps {}
 
-const GET_APPLICATION = gql(getFundingApplication);
 const UPDATE_USERS_APPLICATIONS = gql(createFundingApplication);
 
-const formatApplication = (opportunityWithApplication: OpportunityWithApplication):FundingApplication => {
+const GET_APPLICATIONS = gql(listFundingApplications);
+
+const formatApplication = (
+    opportunityWithApplication: OpportunityWithApplication
+): FundingApplication => {
     const { name, description } = opportunityWithApplication;
     const { lowestRankedApplication } = opportunityWithApplication;
-    const {
-        id,
-        openApplication,
-        closeApplication,
-    } = lowestRankedApplication;
+    const { id, openApplication, closeApplication } = lowestRankedApplication;
 
     // need dynamic opportunityFunders and number
     return {
@@ -32,23 +35,20 @@ const formatApplication = (opportunityWithApplication: OpportunityWithApplicatio
         opportunityFunders: [],
         openDate: openApplication,
         closeDate: closeApplication,
-        ownerName: "Owner",
+        ownerName: "Owner"
     };
 };
 
 export const ApplicationDashboardPage: FC<Props> = props => {
-    const [applications, setApplications] = useState();
-    const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [applicationsReturned, setApplicationsReturned] = useState(false);
+    const { data, error, loading } = useQuery<ListFundingApplicationsQuery>(
+        GET_APPLICATIONS
+    );
+
+    console.log(data);
 
     const putFundingApplication = useMutation<CreateFundingApplicationMutation>(
         UPDATE_USERS_APPLICATIONS
     );
-
-    const userApplications = useQuery<GetFundingApplicationQuery>(
-        GET_APPLICATION
-    ).data;
 
     const addApplicationToUser = useCallback(
         async (opportunityWithApplication: OpportunityWithApplication) => {
@@ -74,60 +74,60 @@ export const ApplicationDashboardPage: FC<Props> = props => {
     };
 
     const getAndPutApplication = useCallback(
-        (opportunityId: string) => {
-            (async () => {
-                try {
-                    const opportunityWithApplication = await getOpportunityWithApplication(
-                        opportunityId
-                    );
-                    await addApplicationToUser(opportunityWithApplication);
-                    window.localStorage.removeItem("opportunityId");
-                } catch (error) {
-                    console.log("error:", error);
-                }
-            })();
+        async (opportunityId: string) => {
+            // (async () => {
+            try {
+                const opportunityWithApplication = await getOpportunityWithApplication(
+                    opportunityId
+                );
+                await addApplicationToUser(opportunityWithApplication);
+                window.localStorage.removeItem("opportunityId");
+            } catch (error) {
+                console.log("error:", error);
+            }
+            // })();
         },
         [addApplicationToUser]
     );
 
-    const getUserApplications = useCallback(async () => {
-        try {
-            const applications = await userApplications;
-            return applications;
-        } catch (error) {
-            setError(true);
-        }
-    }, [userApplications]);
+    // const getUserApplications = useCallback(async () => {
+    //     try {
+    //         const applications = await userApplications;
+    //         return applications;
+    //     } catch (error) {
+    //         setError(true);
+    //     }
+    // }, [userApplications]);
 
     useEffect(() => {
-        if (!applicationsReturned) { 
+        if (!data) {
             const opportunityId = window.localStorage.getItem("opportunityId");
-            setLoading(true);
 
             if (opportunityId) {
                 getAndPutApplication(opportunityId);
             }
 
-            getUserApplications()
-            .then((response) => {
-                console.log("response: ", response)
-                if (response) {
-                    setApplications(response);
-                }
-            })
+            // getUserApplications().then(response => {
+            //     console.log("response: ", response);
+            //     if (response) {
+            //         setApplications(response);
+            //     }
+            // });
 
-            setApplicationsReturned(true);
-            setLoading(false);
+            // setApplicationsReturned(true);
+            // setLoading(false);
         }
-
-        // Linter is forcing me to add these. I only want to run this on mount.
-    },[applicationsReturned, getAndPutApplication, getUserApplications]);
+    }, [getAndPutApplication, data]);
 
     return (
         <ApplicationDashboard
             error={error}
             loading={loading}
-            applications={applications}
+            applications={
+                data &&
+                data.listFundingApplications &&
+                data.listFundingApplications.items
+            }
         />
     );
 };

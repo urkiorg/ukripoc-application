@@ -27,6 +27,12 @@ export const MarkAsComplete = styled.div`
     margin: 20px 0;
 `;
 
+export const WordCounter = styled.span`
+    display: block;
+    font-family: ${NTA_LIGHT};
+    margin-bottom: 25px;
+`;
+
 interface Form {
     applicationCase: string;
     complete: boolean;
@@ -38,7 +44,7 @@ interface Props extends RouteComponentProps {
         complete: boolean
     ) => void;
 
-    question: GetFundingApplicationQuestionQuery;
+    question: GetFundingApplicationQuestionQuery | undefined;
 }
 export const Question: FC<Props> = ({
     question,
@@ -49,7 +55,7 @@ export const Question: FC<Props> = ({
         applicationCase: ""
     };
 
-    const q = question.getFundingApplicationQuestion;
+    const q = question && question.getFundingApplicationQuestion;
 
     const [questionForm, setQuestionForm] = useState(initialState);
 
@@ -77,23 +83,26 @@ export const Question: FC<Props> = ({
         ]
     );
 
-    function onInputChange(event: string) {
-        const textAreaValue = event;
-        if (textAreaValue.length <= wordLimit) {
-            const newWordsRemaining = wordLimit - event.length;
-            setWordsRemaining(newWordsRemaining);
-            setQuestionForm({
-                ...questionForm,
-                applicationCase: textAreaValue
-            });
-            setValidForm(true);
-        } else {
-            const newWordsRemaining = wordLimit - event.length;
-            setWordsRemaining(newWordsRemaining);
-            setValidForm(false);
-            return "Invalid";
-        }
-    }
+    const onInputChange = useCallback(
+        async (event: string) => {
+            const textAreaValue = event;
+            if (textAreaValue.length <= wordLimit) {
+                const newWordsRemaining = wordLimit - event.length;
+                setWordsRemaining(newWordsRemaining);
+                setQuestionForm({
+                    ...questionForm,
+                    applicationCase: textAreaValue
+                });
+                setValidForm(true);
+            } else {
+                const newWordsRemaining = wordLimit - event.length;
+                setWordsRemaining(newWordsRemaining);
+                setValidForm(false);
+                return "Invalid";
+            }
+        },
+        [questionForm, wordLimit]
+    );
 
     return (
         <>
@@ -102,24 +111,20 @@ export const Question: FC<Props> = ({
             </Breadcrumbs>
 
             <LoadingBox loading={false}>
-                <Caption mb={1}>ji </Caption>
+                <Caption mb={1}>{q && q.heading}</Caption>
                 <Title mb={7}>Case for support</Title>
 
                 <Caption size="M" mb={1}>
                     Provide your case for support
                 </Caption>
-                <Details
-                    mb={3}
-                    summary="What should I include in case for support section?"
-                >
-                    ...
+                <Details mb={3} summary="this section">
+                    {q && q.notes}
                 </Details>
                 <form onSubmit={onSubmit}>
                     <FormGroup error={!validForm}>
                         {!validForm && (
                             <ErrorText>
-                                {" "}
-                                Please ensure the text is within the word limit{" "}
+                                Please ensure the text is within the word limit
                             </ErrorText>
                         )}
                         <TextArea
@@ -130,7 +135,7 @@ export const Question: FC<Props> = ({
                         />
                     </FormGroup>
 
-                    <div>Words remaining: {wordsRemaining}</div>
+                    <WordCounter>Words remaining: {wordsRemaining}</WordCounter>
 
                     <MarkAsComplete>
                         <Checkbox

@@ -5,6 +5,7 @@ import { ApplicationDashboard } from "./index";
 storiesOf("Components|ApplicationDashboard", module).add("Default", () => (
     <ApplicationDashboard
         loading={false}
-        error={false}
-        applications={[]} />
+        error={undefined}
+        applications={undefined}
+    />
 ));

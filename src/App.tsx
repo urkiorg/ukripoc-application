@@ -16,6 +16,10 @@ import { AuthWrapper } from "./components/AuthWrapper";
 import { navigate } from "@reach/router";
 import { isCognitoUser, UserType } from "./lib/account";
 
+import { Router } from "@reach/router";
+import { ApplicationPage } from "./components/ApplicationPage";
+import { QuestionPage } from "./components/QuestionPage";
+
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
     region: config.aws_appsync_region,
@@ -86,6 +90,11 @@ export const App: FC = () => {
                 >
                     <AuthWrapper />
                 </Authenticator>
+
+                <Router>
+                    <ApplicationPage path="/application/:id" />
+                    <QuestionPage path="/question/:id" />
+                </Router>
             </Main>
             <UkriFooter />
         </ApolloProvider>

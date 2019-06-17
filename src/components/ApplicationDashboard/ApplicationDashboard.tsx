@@ -11,6 +11,9 @@ import styled from "styled-components";
 import LoadingBox from "@govuk-react/loading-box";
 import { FundingApplications, FundingApplication } from "../../types";
 
+import { daysLeft, friendlyDate } from "../../lib/dateandtime";
+import { ApolloError } from "apollo-client";
+
 export const ApplicationContainer = styled.div`
     background: ${GREY_3};
     padding: 20px;
@@ -39,91 +42,63 @@ export const ApplicationContainerTimeline = styled.div`
 `;
 
 interface Props extends RouteComponentProps {
-    applications: FundingApplications;
-    loading: boolean;
-    error: boolean;
+    applications?: FundingApplications | null;
+    loading?: boolean;
+    error?: ApolloError;
 }
-
-const daysLeft = (date: string) => {
-    const closeDate = new Date(date);
-    const closeDateTime = closeDate.getTime();
-    const today = new Date();
-    const timeToday = today.getTime();
-    const timeleftBig = closeDateTime - timeToday;
-    const timeLeft = Math.floor(timeleftBig / 1000 / 60 / 60);
-
-    let timeToShow = timeLeft;
-    let prefixToShow = "Hours";
-
-    if (timeLeft > 24 && timeLeft < 48) {
-        timeToShow = Math.floor(timeLeft / 24);
-        prefixToShow = "Day left";
-    } else if (timeLeft > 47) {
-        //2days etc...
-        timeToShow = Math.floor(timeLeft / 24);
-        prefixToShow = "Days left";
-    } else if (timeLeft === 1) {
-        prefixToShow = "Hour left";
-    } else if (timeLeft < 0) {
-        timeToShow = 0;
-        prefixToShow = "Ended";
-    }
-
-    return (
-        <>
-            <H4 mb={0}>{timeToShow}</H4>
-            <span>{prefixToShow}</span>
-        </>
-    );
-};
-
-const friendlyDate = (date: string) =>
-    new Date(date).toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "long"
-    });
 
 const renderApplications = (applications: FundingApplications) => (
     <React.Fragment>
         <span> In progress ( {applications.length} )</span>
         {applications &&
             applications.length &&
-            applications.map((application: FundingApplication) => {
+            applications.map((application: FundingApplication | null) => {
+                if (!application) {
+                    return null;
+                }
+
+                const timeLeft = daysLeft(application.closeDate);
+
+                const closeDate: string | null = friendlyDate(
+                    application.closeDate
+                );
+
                 return (
-                    <ApplicationContainerItem key={application.id}>
-                        <GridRow>
-                            <GridCol setWidth="50%">
-                                <Link
-                                    as={RouterLink}
-                                    to={`application/${application.id}`}
-                                >
-                                    {application.opportunityName}
-                                </Link>
-                                <div>
-                                    Application number:
-                                    {/* {application.number} */}
-                                </div>
-                                <div>
-                                    Opportunity:
-                                    {application.opportunityName}
-                                </div>
-                            </GridCol>
-                            <GridCol setWidth="25%">
-                                <ApplicationContainerTimeline>
-                                    {daysLeft(application.closeDate)}
+                    application && (
+                        <ApplicationContainerItem key={application.id}>
+                            <GridRow>
+                                <GridCol setWidth="50%">
+                                    <Link
+                                        as={RouterLink}
+                                        to={`application/${application.id}`}
+                                    >
+                                        {application.opportunityName}
+                                    </Link>
+                                    <div>Application number:</div>
                                     <div>
-                                        Deadline{" "}
-                                        {friendlyDate(application.closeDate)}
+                                        Opportunity:
+                                        {application.opportunityName}
                                     </div>
-                                </ApplicationContainerTimeline>
-                            </GridCol>
-                            <GridCol setWidth="25%">
-                                <ApplicationContainerItemComplete>
-                                    0% complete
-                                </ApplicationContainerItemComplete>
-                            </GridCol>
-                        </GridRow>
-                    </ApplicationContainerItem>
+                                </GridCol>
+                                <GridCol setWidth="25%">
+                                    <ApplicationContainerTimeline>
+                                        {timeLeft && (
+                                            <>
+                                                <H4 mb={1}>{timeLeft.time}</H4>
+                                                <span>{timeLeft.suffix}</span>
+                                            </>
+                                        )}
+                                        Deadline {closeDate}
+                                    </ApplicationContainerTimeline>
+                                </GridCol>
+                                <GridCol setWidth="25%">
+                                    <ApplicationContainerItemComplete>
+                                        0% complete
+                                    </ApplicationContainerItemComplete>
+                                </GridCol>
+                            </GridRow>
+                        </ApplicationContainerItem>
+                    )
                 );
             })}
     </React.Fragment>
