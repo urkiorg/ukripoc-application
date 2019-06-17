@@ -18,6 +18,7 @@ import { isCognitoUser, UserType } from "./lib/account";
 
 import { Router } from "@reach/router";
 import { ApplicationPage } from "./components/ApplicationPage";
+import { QuestionPage } from "./components/QuestionPage";
 
 const client = new AWSAppSyncClient({
     url: config.aws_appsync_graphqlEndpoint,
@@ -92,6 +93,7 @@ export const App: FC = () => {
 
                 <Router>
                     <ApplicationPage path="/application/:id" />
+                    <QuestionPage path="/question/:id" />
                 </Router>
             </Main>
             <UkriFooter />

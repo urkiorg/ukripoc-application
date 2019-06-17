@@ -71,7 +71,9 @@ export const Application: FC<Props> = props => {
                                 <Label mb={1}>Funding body:</Label>
                             </GridRow>
                             <GridRow mb={5}>
-                                / {application.opportunityFunders}
+                                {application.opportunityFunders &&
+                                    !!application.opportunityFunders.length &&
+                                    application.opportunityFunders.join(", ")}
                             </GridRow>
                             <GridRow>
                                 <Label mb={1}>Application deadline: </Label>
