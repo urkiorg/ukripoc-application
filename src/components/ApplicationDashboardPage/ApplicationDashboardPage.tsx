@@ -65,7 +65,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         try {
             // Update the hard coded url
             const response = await fetch(
-                `http://localhost:3000/opportunity/retrieve/${opportunityId}`
+                `https://develop.d3562686bv95v2.amplifyapp.com/opportunity/retrieve/${opportunityId}`
             );
             return response.json() || "";
         } catch (error) {
@@ -100,24 +100,12 @@ export const ApplicationDashboardPage: FC<Props> = props => {
     // }, [userApplications]);
 
     useEffect(() => {
-        if (!data) {
-            const opportunityId = window.localStorage.getItem("opportunityId");
+        const opportunityId = window.localStorage.getItem("opportunityId");
 
-            if (opportunityId) {
-                getAndPutApplication(opportunityId);
-            }
-
-            // getUserApplications().then(response => {
-            //     console.log("response: ", response);
-            //     if (response) {
-            //         setApplications(response);
-            //     }
-            // });
-
-            // setApplicationsReturned(true);
-            // setLoading(false);
+        if (opportunityId) {
+            getAndPutApplication(opportunityId);
         }
-    }, [getAndPutApplication, data]);
+    }, [getAndPutApplication]);
 
     return (
         <ApplicationDashboard
