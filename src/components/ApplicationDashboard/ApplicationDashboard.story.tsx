@@ -3,5 +3,9 @@ import { storiesOf } from "@storybook/react";
 import { ApplicationDashboard } from "./index";
 
 storiesOf("Components|ApplicationDashboard", module).add("Default", () => (
-    <ApplicationDashboard applications={undefined} />
+    <ApplicationDashboard
+        loading={false}
+        error={undefined}
+        applications={undefined}
+    />
 ));

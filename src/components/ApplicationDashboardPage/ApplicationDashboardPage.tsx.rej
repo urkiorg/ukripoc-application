@@ -1,0 +1,4 @@
+diff a/src/components/ApplicationDashboardPage/ApplicationDashboardPage.tsx b/src/components/ApplicationDashboardPage/ApplicationDashboardPage.tsx	(rejected hunks)
+@@ -51 +51 @@ export const ApplicationDashboardPage: FC<Props> = (props) => {
+-    });
++    }, []);
