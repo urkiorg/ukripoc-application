@@ -9,6 +9,7 @@ type FundingApplication
     opportunityFunders: [String]
     openDate: String
     closeDate: String
+    complete: Boolean
     fundingApplicationQuestions: [FundingApplicationQuestion]
         @connection(name: "FundingApplicationQuestion")
 }
