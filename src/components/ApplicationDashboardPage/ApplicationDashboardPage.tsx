@@ -61,12 +61,33 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         [putFundingApplication]
     );
 
+    // const addQuestionToUser = useCallback(
+    //     async (opportunityWithApplication: OpportunityWithApplication) => {
+    //         return putFundingApplication({
+    //             variables: {
+    //                 input: formatApplication(opportunityWithApplication)
+    //             }
+    //         });
+    //     },
+    //     [putFundingApplication]
+    // );
+
     const getOpportunityWithApplication = async (opportunityId: string) => {
         try {
             // Update the hard coded url
             const response = await fetch(
-                `https://develop.d3562686bv95v2.amplifyapp.com/opportunity/retrieve/${opportunityId}`
+                `https://urujq4chp1.execute-api.eu-west-1.amazonaws.com/develop/opportunity/retrieve/${opportunityId}`
+                // {
+                //     method: "get",
+                //     headers: {
+                //         "Access-Control-Request-Headers": "*",
+                //         "Access-Control-Request-Method": "*"
+                //     }
+                // }
             );
+
+            console.log(response);
+
             return response.json() || "";
         } catch (error) {
             console.log("error: ", error);
@@ -89,15 +110,6 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         },
         [addApplicationToUser]
     );
-
-    // const getUserApplications = useCallback(async () => {
-    //     try {
-    //         const applications = await userApplications;
-    //         return applications;
-    //     } catch (error) {
-    //         setError(true);
-    //     }
-    // }, [userApplications]);
 
     useEffect(() => {
         const opportunityId = window.localStorage.getItem("opportunityId");

@@ -27,7 +27,7 @@ export const AuthRedirector: FC<Props> = ({ navigate, authProps }) => {
         navigate(to);
     }
 
-    return <p>{authProps.authState}</p>;
+    return <p />;
 };
 
 export default AuthRedirector;

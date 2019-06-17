@@ -37,6 +37,11 @@ export const ApplicationContainerItemComplete = styled.div`
     border-left: 1px dotted ${GREY_3};
 `;
 
+export const SuffixLeft = styled.div`
+    font-family: ${NTA_LIGHT};
+    text-align: center;
+`;
+
 export const ApplicationContainerTimeline = styled.div`
     font-family: ${NTA_LIGHT};
     text-align: center;
@@ -48,21 +53,25 @@ interface Props extends RouteComponentProps {
     error?: ApolloError;
 }
 
+const getApplicationStatus = (application: FundingApplication) => {
+    return 0;
+};
+
 const renderApplications = (applications: FundingApplications) => (
     <React.Fragment>
-        <P>In progress ({applications.length})</P>
         {applications &&
             applications.length &&
             applications.map((application: FundingApplication | null) => {
                 if (!application) {
                     return null;
                 }
-
                 const timeLeft = daysLeft(application.closeDate);
 
                 const closeDate: string | null = friendlyDate(
                     application.closeDate
                 );
+
+                const applicationCompleted = getApplicationStatus(application);
 
                 return (
                     application && (
@@ -75,18 +84,22 @@ const renderApplications = (applications: FundingApplications) => (
                                     >
                                         {application.opportunityName}
                                     </Link>
-                                    <div>Application number:</div>
                                     <div>
-                                        Opportunity:
-                                        {application.opportunityName}
+                                        Application number: {application.id}
+                                    </div>
+                                    <div>
+                                        Opportunity:{" "}
+                                        {application.opportunityDescription}
                                     </div>
                                 </GridCol>
                                 <GridCol setWidth="25%">
                                     <ApplicationContainerTimeline>
                                         {timeLeft && (
                                             <>
-                                                <H4 mb={1}>{timeLeft.time}</H4>
-                                                <span>{timeLeft.suffix}</span>
+                                                <H4 mb={0}>{timeLeft.time}</H4>
+                                                <SuffixLeft>
+                                                    {timeLeft.suffix}
+                                                </SuffixLeft>
                                             </>
                                         )}
                                         Deadline {closeDate}
@@ -94,7 +107,7 @@ const renderApplications = (applications: FundingApplications) => (
                                 </GridCol>
                                 <GridCol setWidth="25%">
                                     <ApplicationContainerItemComplete>
-                                        0% complete
+                                        {applicationCompleted}% complete
                                     </ApplicationContainerItemComplete>
                                 </GridCol>
                             </GridRow>
@@ -111,22 +124,28 @@ export const ApplicationDashboard: FC<Props> = ({
     applications,
     loading,
     error
-}) => (
-    <>
-        <Title>Dashboard</Title>
-        <LoadingBox loading={loading}>
-            {!error ? (
-                <ApplicationContainer>
-                    <H4 mb={1}> Applications </H4>
-                    {applications && applications.length > 0
-                        ? renderApplications(applications)
-                        : renderNoApplications()}
-                </ApplicationContainer>
-            ) : (
-                <P>Sorry, we are unable to show your applications.</P>
-            )}
-        </LoadingBox>
-    </>
-);
+}) => {
+    const applicationCount = (applications && applications.length) || 0;
+
+    return (
+        <>
+            <Title>Dashboard</Title>
+            <LoadingBox loading={loading}>
+                {!error ? (
+                    <ApplicationContainer>
+                        <H4 mb={1}> Applications </H4>
+                        <span>In progress ({applicationCount})</span>
+
+                        {applications && applications.length > 0
+                            ? renderApplications(applications)
+                            : renderNoApplications()}
+                    </ApplicationContainer>
+                ) : (
+                    <P>Sorry, we are unable to show your applications.</P>
+                )}
+            </LoadingBox>
+        </>
+    );
+};
 
 export default ApplicationDashboard;

@@ -21,6 +21,8 @@ import { GetFundingApplicationQuery } from "../../API";
 
 import LoadingBox from "@govuk-react/loading-box";
 
+import { friendlyDate } from "../../lib/dateandtime";
+
 interface Props extends RouteComponentProps {
     application: GetFundingApplicationQuery | undefined;
 }
@@ -40,6 +42,8 @@ export const Application: FC<Props> = props => {
     if (!application) {
         return null;
     }
+
+    const closeDate: string | null = friendlyDate(application.closeDate);
 
     return (
         <>
@@ -78,7 +82,7 @@ export const Application: FC<Props> = props => {
                             <GridRow>
                                 <Label mb={1}>Application deadline: </Label>
                             </GridRow>
-                            <GridRow>{application.closeDate}</GridRow>
+                            <GridRow>{closeDate}</GridRow>
                         </GridCol>
                     </GridRow>
                 </ApplicationSummary>
