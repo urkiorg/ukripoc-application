@@ -52,7 +52,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
 
     const addApplicationToUser = useCallback(
         async (opportunityWithApplication: OpportunityWithApplication) => {
-            await putFundingApplication({
+            return putFundingApplication({
                 variables: {
                     input: formatApplication(opportunityWithApplication)
                 }
@@ -64,7 +64,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
     const getOpportunityWithApplication = async (opportunityId: string) => {
         try {
             // Update the hard coded url
-            let response = await fetch(
+            const response = await fetch(
                 `http://localhost:3000/opportunity/retrieve/${opportunityId}`
             );
             return response.json() || "";

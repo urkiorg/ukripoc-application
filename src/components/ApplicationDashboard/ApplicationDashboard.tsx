@@ -5,6 +5,7 @@ import { Title } from "ukripoc-components";
 import { GREY_3, GREY_2 } from "govuk-colours";
 import { H4 } from "@govuk-react/heading";
 import { NTA_LIGHT } from "@govuk-react/constants";
+import P from "@govuk-react/paragraph";
 import GridRow from "@govuk-react/grid-row";
 import GridCol from "@govuk-react/grid-col";
 import styled from "styled-components";
@@ -49,7 +50,7 @@ interface Props extends RouteComponentProps {
 
 const renderApplications = (applications: FundingApplications) => (
     <React.Fragment>
-        <span> In progress ( {applications.length} )</span>
+        <P>In progress ({applications.length})</P>
         {applications &&
             applications.length &&
             applications.map((application: FundingApplication | null) => {
@@ -104,7 +105,7 @@ const renderApplications = (applications: FundingApplications) => (
     </React.Fragment>
 );
 
-const renderNoApplications = () => <div>You do not have any applications</div>;
+const renderNoApplications = () => <P>You do not have any applications</P>;
 
 export const ApplicationDashboard: FC<Props> = ({
     applications,
@@ -122,7 +123,7 @@ export const ApplicationDashboard: FC<Props> = ({
                         : renderNoApplications()}
                 </ApplicationContainer>
             ) : (
-                <div>Sorry, we are unable to show your applications.</div>
+                <P>Sorry, we are unable to show your applications.</P>
             )}
         </LoadingBox>
     </>
