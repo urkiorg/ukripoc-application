@@ -49,5 +49,22 @@
                 "cognitoapplicants": {}
             }
         }
+    },
+    "torchia": {
+        "awscloudformation": {
+            "AuthRoleName": "ukripoc-application-torchia-20190607110740-authRole",
+            "UnauthRoleArn": "arn:aws:iam::475991803334:role/ukripoc-application-torchia-20190607110740-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::475991803334:role/ukripoc-application-torchia-20190607110740-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "ukripoc-application-torchia-20190607110740-deployment",
+            "UnauthRoleName": "ukripoc-application-torchia-20190607110740-unauthRole",
+            "StackName": "ukripoc-application-torchia-20190607110740",
+            "StackId": "arn:aws:cloudformation:eu-west-1:475991803334:stack/ukripoc-application-torchia-20190607110740/15c389e0-890c-11e9-b22c-0abc187d3320"
+        },
+        "categories": {
+            "auth": {
+                "cognitoapplicants": {}
+            }
+        }
     }
 }

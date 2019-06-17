@@ -23,7 +23,7 @@ export const daysLeft = (date: string | null) => {
         suffix = "Hour left";
     } else if (timeLeft < 0) {
         time = 0;
-        suffix = "Ended";
+        suffix = "Opportunity closed";
     }
 
     return { time, suffix };
