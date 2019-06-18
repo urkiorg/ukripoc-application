@@ -37,6 +37,7 @@ export const QuestionPage: FC<Props> = props => {
 
     const updateFundingApplicationQuestion = useCallback(
         async (applicationCase: string, completed: boolean) => {
+            console.log(applicationCase);
             const result = await updateFundingApplicationQuestionMutation({
                 variables: {
                     input: {
@@ -50,7 +51,9 @@ export const QuestionPage: FC<Props> = props => {
             const { data } = result;
 
             if (data) {
-                navigate(`/setup/${data.updateWebsiteListing.opportunity.id}`);
+                navigate(
+                    `/application/${data.updateFundingApplicationQuestion.fundingApplication.id}`
+                );
             }
         },
         [updateFundingApplicationQuestionMutation, props.id]
