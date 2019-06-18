@@ -11,12 +11,16 @@ import {
 import { listFundingApplications } from "../../graphql/queries";
 
 import { useQuery } from "react-apollo-hooks";
-import { createFundingApplication } from "../../graphql/mutations";
+import {
+    createFundingApplication
+    // createFundingApplicationQuestion
+} from "../../graphql/mutations";
 import { OpportunityWithApplication, FundingApplication } from "../../types";
 
 interface Props extends RouteComponentProps {}
 
 const UPDATE_USERS_APPLICATIONS = gql(createFundingApplication);
+// const CREATE_USERS_QUESTIONS = gql(createFundingApplicationQuestion);
 
 const GET_APPLICATIONS = gql(listFundingApplications);
 
@@ -76,14 +80,15 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         try {
             // Update the hard coded url
             const response = await fetch(
-                `https://urujq4chp1.execute-api.eu-west-1.amazonaws.com/develop/opportunity/retrieve/${opportunityId}`
-                // {
-                //     method: "get",
-                //     headers: {
-                //         "Access-Control-Request-Headers": "*",
-                //         "Access-Control-Request-Method": "*"
-                //     }
-                // }
+                `https://urujq4chp1.execute-api.eu-west-1.amazonaws.com/develop/opportunity/retrieve/${opportunityId}`,
+                {
+                    method: "get",
+                    headers: {
+                        "Access-Control-Request-Headers": "*",
+                        "Access-Control-Request-Method": "*"
+                    },
+                    mode: "cors"
+                }
             );
 
             console.log(response);
