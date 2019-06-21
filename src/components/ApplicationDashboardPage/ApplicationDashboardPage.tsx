@@ -6,21 +6,22 @@ import { ApplicationDashboard } from "../ApplicationDashboard";
 
 import {
     ListFundingApplicationsQuery,
-    CreateFundingApplicationMutation
+    CreateFundingApplicationMutation,
+    CreateFundingApplicationQuestionMutationVariables
 } from "../../API";
 import { listFundingApplications } from "../../graphql/queries";
 
 import { useQuery } from "react-apollo-hooks";
 import {
-    createFundingApplication
-    // createFundingApplicationQuestion
+    createFundingApplication,
+    createFundingApplicationQuestion
 } from "../../graphql/mutations";
 import { OpportunityWithApplication, FundingApplication } from "../../types";
 
 interface Props extends RouteComponentProps {}
 
 const UPDATE_USERS_APPLICATIONS = gql(createFundingApplication);
-// const CREATE_USERS_QUESTIONS = gql(createFundingApplicationQuestion);
+const UPDATE_USERS_QUESTIONS = gql(createFundingApplicationQuestion);
 
 const GET_APPLICATIONS = gql(listFundingApplications);
 
@@ -29,11 +30,10 @@ const formatApplication = (
 ): FundingApplication => {
     const { name, description } = opportunityWithApplication;
     const { lowestRankedApplication } = opportunityWithApplication;
-    const { id, openApplication, closeApplication } = lowestRankedApplication;
+    const { openApplication, closeApplication } = lowestRankedApplication;
 
     // need dynamic opportunityFunders and number
     return {
-        id,
         opportunityName: name,
         opportunityDescription: description,
         opportunityFunders: [],
@@ -45,36 +45,70 @@ const formatApplication = (
 
 export const ApplicationDashboardPage: FC<Props> = props => {
     const { data, error, loading } = useQuery<ListFundingApplicationsQuery>(
-        GET_APPLICATIONS
+        GET_APPLICATIONS,
+        { fetchPolicy: "network-only" }
     );
-
-    console.log(data);
 
     const putFundingApplication = useMutation<CreateFundingApplicationMutation>(
         UPDATE_USERS_APPLICATIONS
     );
 
+    const putFundingApplicationQuestions = useMutation<
+        CreateFundingApplicationQuestionMutationVariables
+    >(UPDATE_USERS_QUESTIONS);
+
     const addApplicationToUser = useCallback(
         async (opportunityWithApplication: OpportunityWithApplication) => {
-            return putFundingApplication({
+            const result = await putFundingApplication({
                 variables: {
                     input: formatApplication(opportunityWithApplication)
                 }
             });
+
+            const { data } = result;
+
+            console.log(data.createFundingApplication.id);
+
+            return data.createFundingApplication.id;
         },
         [putFundingApplication]
     );
 
-    // const addQuestionToUser = useCallback(
-    //     async (opportunityWithApplication: OpportunityWithApplication) => {
-    //         return putFundingApplication({
-    //             variables: {
-    //                 input: formatApplication(opportunityWithApplication)
-    //             }
-    //         });
-    //     },
-    //     [putFundingApplication]
-    // );
+    interface QuestionT {
+        id: string;
+        owner: string;
+        heading: string;
+        title: string;
+        subtitle: string;
+        notes: string;
+        wordLimit: number;
+        fundingApplication: FundingApplication;
+        answer: string;
+        complete: boolean;
+    }
+
+    const addQuestionToUser = useCallback(
+        async (opportunityWithApplication: any, applicationId: string) => {
+            opportunityWithApplication.forEach(async (question: QuestionT) => {
+                console.log(applicationId, question);
+                const v = await putFundingApplicationQuestions({
+                    variables: {
+                        input: {
+                            heading: question.heading,
+                            notes: question.notes,
+                            subtitle: question.subtitle,
+                            title: question.title,
+                            wordLimit: question.wordLimit,
+                            fundingApplicationQuestionFundingApplicationId: applicationId
+                        }
+                    }
+                });
+
+                return v;
+            });
+        },
+        [putFundingApplicationQuestions]
+    );
 
     const getOpportunityWithApplication = async (opportunityId: string) => {
         try {
@@ -91,8 +125,6 @@ export const ApplicationDashboardPage: FC<Props> = props => {
                 }
             );
 
-            console.log(response);
-
             return response.json() || "";
         } catch (error) {
             console.log("error: ", error);
@@ -106,14 +138,24 @@ export const ApplicationDashboardPage: FC<Props> = props => {
                 const opportunityWithApplication = await getOpportunityWithApplication(
                     opportunityId
                 );
-                await addApplicationToUser(opportunityWithApplication);
+
+                const applicationId = await addApplicationToUser(
+                    opportunityWithApplication
+                );
+
+                const questions =
+                    opportunityWithApplication.lowestRankedApplication
+                        .questions;
+
+                addQuestionToUser(questions, applicationId);
+
                 window.localStorage.removeItem("opportunityId");
             } catch (error) {
                 console.log("error:", error);
             }
             // })();
         },
-        [addApplicationToUser]
+        [addApplicationToUser, addQuestionToUser]
     );
 
     useEffect(() => {
@@ -122,7 +164,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         if (opportunityId) {
             getAndPutApplication(opportunityId);
         }
-    }, [getAndPutApplication]);
+    });
 
     return (
         <ApplicationDashboard

@@ -31,7 +31,7 @@ export const QuestionPage: FC<Props> = props => {
             variables: {
                 id: props.id
             },
-            fetchPolicy: "cache-first"
+            fetchPolicy: "network-only"
         }
     );
 
