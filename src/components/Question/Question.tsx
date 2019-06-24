@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState, FormEvent } from "react";
+import React, { FC, useCallback, useState, FormEvent, useEffect } from "react";
 
 import { useFormState } from "react-use-form-state";
 import { RouteComponentProps } from "@reach/router";
@@ -52,41 +52,40 @@ export const Question: FC<Props> = ({
 }) => {
     const q = question && question.getFundingApplicationQuestion;
 
-    const defaultAnswer = (q && q.answer) || "";
-
-    const [listingDescription, setlistingDescription] = useState(defaultAnswer);
-
     const isComplete = (q && q.complete) || false;
+
+    const defaultAnswer = (q && q.answer) || "";
 
     const initialState = {
         complete: isComplete,
         applicationCase: defaultAnswer
     };
 
-    const [questionForm, setQuestionForm] = useState(initialState);
-
     const [validForm, setValidForm] = useState<boolean>(true);
+
+    const [answer, setAnswer] = useState(defaultAnswer);
 
     const wordLimit = (q && q.wordLimit) || 100;
 
     const [wordsRemaining, setWordsRemaining] = useState(
-        wordLimit - listingDescription.length
+        wordLimit - answer.length
     );
 
     const [formState, { textarea, checkbox }] = useFormState(initialState);
 
+    useEffect(() => {
+        setAnswer(defaultAnswer);
+        const newWordsRemaining = wordLimit - defaultAnswer.length;
+        setWordsRemaining(newWordsRemaining);
+    }, [defaultAnswer, wordLimit]);
+
     const onInputChange = useCallback(
         async event => {
-            setlistingDescription(event.target.value);
+            setAnswer(event.target.value);
 
             if (event.target.value.length <= wordLimit) {
                 const newWordsRemaining = wordLimit - event.target.value.length;
-
                 setWordsRemaining(newWordsRemaining);
-                setQuestionForm({
-                    ...questionForm,
-                    applicationCase: event.target.value
-                });
                 setValidForm(true);
             } else {
                 const newWordsRemaining = wordLimit - event.target.value.length;
@@ -95,7 +94,7 @@ export const Question: FC<Props> = ({
                 return "Invalid";
             }
         },
-        [questionForm, wordLimit]
+        [wordLimit]
     );
 
     const onSubmit = useCallback(
@@ -147,7 +146,7 @@ export const Question: FC<Props> = ({
                             mb={3}
                             input={{
                                 onChange: onInputChange,
-                                value: defaultAnswer
+                                value: answer
                             }}
                             {...textarea({
                                 name: "applicationCase"
