@@ -131,32 +131,28 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         }
     };
 
-    const getAndPutApplication = useCallback(
-        async (opportunityId: string) => {
-            // (async () => {
-            try {
-                const opportunityWithApplication = await getOpportunityWithApplication(
-                    opportunityId
-                );
+    const getAndPutApplication = useCallback(async (opportunityId: string) => {
+        // (async () => {
+        try {
+            const opportunityWithApplication = await getOpportunityWithApplication(
+                opportunityId
+            );
 
-                const applicationId = await addApplicationToUser(
-                    opportunityWithApplication
-                );
+            const applicationId = await addApplicationToUser(
+                opportunityWithApplication
+            );
 
-                const questions =
-                    opportunityWithApplication.lowestRankedApplication
-                        .questions;
+            const questions =
+                opportunityWithApplication.lowestRankedApplication.questions;
 
-                addQuestionToUser(questions, applicationId);
+            addQuestionToUser(questions, applicationId);
 
-                window.localStorage.removeItem("opportunityId");
-            } catch (error) {
-                console.log("error:", error);
-            }
-            // })();
-        },
-        [addApplicationToUser, addQuestionToUser]
-    );
+            window.localStorage.removeItem("opportunityId");
+        } catch (error) {
+            console.log("error:", error);
+        }
+        // })();
+    }, [addApplicationToUser, addQuestionToUser]);
 
     useEffect(() => {
         const opportunityId = window.localStorage.getItem("opportunityId");
@@ -164,7 +160,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         if (opportunityId) {
             getAndPutApplication(opportunityId);
         }
-    });
+    }, [getAndPutApplication]);
 
     return (
         <ApplicationDashboard

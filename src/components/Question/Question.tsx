@@ -52,8 +52,6 @@ export const Question: FC<Props> = ({
 }) => {
     const q = question && question.getFundingApplicationQuestion;
 
-    const answerGiven = q && q.answer;
-
     const defaultAnswer = (q && q.answer) || "";
 
     const [listingDescription, setlistingDescription] = useState(defaultAnswer);
@@ -62,7 +60,7 @@ export const Question: FC<Props> = ({
 
     const initialState = {
         complete: isComplete,
-        applicationCase: answerGiven
+        applicationCase: defaultAnswer
     };
 
     const [questionForm, setQuestionForm] = useState(initialState);
@@ -149,7 +147,7 @@ export const Question: FC<Props> = ({
                             mb={3}
                             input={{
                                 onChange: onInputChange,
-                                value: listingDescription
+                                value: defaultAnswer
                             }}
                             {...textarea({
                                 name: "applicationCase"
