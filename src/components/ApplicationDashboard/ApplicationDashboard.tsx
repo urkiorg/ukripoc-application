@@ -100,9 +100,7 @@ const renderApplications = (applications: FundingApplications) => (
                                     >
                                         {application.opportunityName}
                                     </Link>
-                                    <div>
-                                        Application number: {application.id}
-                                    </div>
+                                    <div>Application number:</div>
                                     <div>
                                         Opportunity:{" "}
                                         {application.opportunityDescription}
@@ -152,6 +150,25 @@ export const ApplicationDashboard: FC<Props> = ({
         applications.push(newApplication);
     }
 
+    const sortApplicationsByDate = (applications: FundingApplications) => {
+        if (!applications) {
+            return applications;
+        }
+
+        const justNowDate = +new Date();
+
+        applications.sort(function(a, b) {
+            const dateA =
+                a && a.closeDate ? +new Date(a.closeDate) : justNowDate;
+            const dateB =
+                b && b.closeDate ? +new Date(b.closeDate) : justNowDate;
+
+            return dateA - dateB;
+        });
+
+        return applications;
+    };
+
     return (
         <>
             <Title>Dashboard</Title>
@@ -162,7 +179,9 @@ export const ApplicationDashboard: FC<Props> = ({
                         <span>In progress ({applicationCount})</span>
 
                         {applications && applications.length > 0
-                            ? renderApplications(applications)
+                            ? renderApplications(
+                                  sortApplicationsByDate(applications)
+                              )
                             : renderNoApplications()}
                     </ApplicationContainer>
                 ) : (
