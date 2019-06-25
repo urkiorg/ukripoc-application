@@ -159,6 +159,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         console.log("useEffect");
         const opportunityId = window.localStorage.getItem("opportunityId");
         if (opportunityId) {
+            window.localStorage.removeItem("opportunityId");
             getAndPutApplication(opportunityId);
         }
     }, [getAndPutApplication]);
