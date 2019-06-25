@@ -43,6 +43,18 @@ export interface FundingApplication {
     closeDate: string | null;
 }
 
+export interface FundingApplicationWithQuestions {
+    id?: string;
+    ownerName: string | null;
+    opportunityName: string!;
+    opportunityDescription: string | null;
+    opportunityFunders: (string | null) [] | null;
+    openDate: string | null;
+    closeDate: string | null;
+    FundingApplicationQuestions: [FundingApplicationQuestion]
+}
+
+
 export interface FundingApplicationQuestion {
     id: string;
     owner: string;

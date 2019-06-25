@@ -9,7 +9,6 @@ import {
     CreateFundingApplicationMutation,
     CreateFundingApplicationQuestionMutationVariables
 } from "../../API";
-import { listFundingApplications } from "../../graphql/queries";
 
 import { useQuery } from "react-apollo-hooks";
 import {
@@ -23,7 +22,39 @@ interface Props extends RouteComponentProps {}
 const UPDATE_USERS_APPLICATIONS = gql(createFundingApplication);
 const UPDATE_USERS_QUESTIONS = gql(createFundingApplicationQuestion);
 
-const GET_APPLICATIONS = gql(listFundingApplications);
+const listFundingApplicationsWithQuestion = `query ListFundingApplications(
+    $filter: ModelFundingApplicationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFundingApplications(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        ownerName
+        opportunityName
+        opportunityDescription
+        opportunityFunders
+        openDate
+        closeDate
+        fundingApplicationQuestions {
+          items {
+            complete,
+            wordLimit
+          },
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+  `;
+
+const GET_APPLICATIONS = gql(listFundingApplicationsWithQuestion);
 
 const formatApplication = (
     opportunityWithApplication: OpportunityWithApplication
@@ -32,7 +63,8 @@ const formatApplication = (
     const { lowestRankedApplication } = opportunityWithApplication;
     const { openApplication, closeApplication } = lowestRankedApplication;
 
-    // need dynamic opportunityFunders and number
+    console.log(lowestRankedApplication);
+
     return {
         opportunityName: name,
         opportunityDescription: description,

@@ -55,8 +55,22 @@ interface Props extends RouteComponentProps {
     error?: ApolloError;
 }
 
-const getApplicationStatus = (application: FundingApplication) => {
-    return 0;
+const getApplicationStatus = (application: any) => {
+    const questions = application.fundingApplicationQuestions.items;
+    if (!questions) {
+        return 0;
+    }
+    const questionsAmount = questions.length;
+    const questionsComplete = questions.filter(function(x: any) {
+        return x.complete === true;
+    }).length;
+    const totalValue = questionsAmount;
+
+    let returnValue = (100 * questionsComplete) / totalValue;
+    if (isNaN(returnValue)) {
+        returnValue = 0;
+    }
+    return returnValue;
 };
 
 const renderApplications = (applications: FundingApplications) => (
