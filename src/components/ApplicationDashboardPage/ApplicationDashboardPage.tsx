@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useCallback } from "react";
+import React, { FC, useEffect, useCallback, useState } from "react";
 import { RouteComponentProps } from "@reach/router";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo-hooks";
@@ -44,11 +44,6 @@ const formatApplication = (
 };
 
 export const ApplicationDashboardPage: FC<Props> = props => {
-    const { data, error, loading } = useQuery<ListFundingApplicationsQuery>(
-        GET_APPLICATIONS,
-        { fetchPolicy: "network-only" }
-    );
-
     const putFundingApplication = useMutation<CreateFundingApplicationMutation>(
         UPDATE_USERS_APPLICATIONS
     );
@@ -59,6 +54,8 @@ export const ApplicationDashboardPage: FC<Props> = props => {
 
     const addApplicationToUser = useCallback(
         async (opportunityWithApplication: OpportunityWithApplication) => {
+            console.log("ADDING APPLICATION TO USER....");
+
             const result = await putFundingApplication({
                 variables: {
                     input: formatApplication(opportunityWithApplication)
@@ -67,12 +64,15 @@ export const ApplicationDashboardPage: FC<Props> = props => {
 
             const { data } = result;
 
-            console.log(data.createFundingApplication.id);
+            console.log("ABOUT TO SET APPLICATIONS....");
+            setApplications(data.createFundingApplication);
 
             return data.createFundingApplication.id;
         },
         [putFundingApplication]
     );
+
+    const [applications, setApplications] = useState();
 
     interface QuestionT {
         id: string;
@@ -90,7 +90,6 @@ export const ApplicationDashboardPage: FC<Props> = props => {
     const addQuestionToUser = useCallback(
         async (opportunityWithApplication: any, applicationId: string) => {
             opportunityWithApplication.forEach(async (question: QuestionT) => {
-                console.log(applicationId, question);
                 const v = await putFundingApplicationQuestions({
                     variables: {
                         input: {
@@ -131,36 +130,43 @@ export const ApplicationDashboardPage: FC<Props> = props => {
         }
     };
 
-    const getAndPutApplication = useCallback(async (opportunityId: string) => {
-        // (async () => {
-        try {
-            const opportunityWithApplication = await getOpportunityWithApplication(
-                opportunityId
-            );
+    const getAndPutApplication = useCallback(
+        async (opportunityId: string) => {
+            try {
+                const opportunityWithApplication = await getOpportunityWithApplication(
+                    opportunityId
+                );
 
-            const applicationId = await addApplicationToUser(
-                opportunityWithApplication
-            );
+                const applicationId = await addApplicationToUser(
+                    opportunityWithApplication
+                );
 
-            const questions =
-                opportunityWithApplication.lowestRankedApplication.questions;
+                const questions =
+                    opportunityWithApplication.lowestRankedApplication
+                        .questions;
 
-            addQuestionToUser(questions, applicationId);
+                addQuestionToUser(questions, applicationId);
 
-            window.localStorage.removeItem("opportunityId");
-        } catch (error) {
-            console.log("error:", error);
-        }
-        // })();
-    }, [addApplicationToUser, addQuestionToUser]);
+                window.localStorage.removeItem("opportunityId");
+            } catch (error) {
+                console.log("error:", error);
+            }
+        },
+        [addApplicationToUser, addQuestionToUser]
+    );
 
     useEffect(() => {
+        console.log("useEffect");
         const opportunityId = window.localStorage.getItem("opportunityId");
-
         if (opportunityId) {
             getAndPutApplication(opportunityId);
         }
     }, [getAndPutApplication]);
+
+    const { data, error, loading } = useQuery<ListFundingApplicationsQuery>(
+        GET_APPLICATIONS,
+        { fetchPolicy: "network-only" }
+    );
 
     return (
         <ApplicationDashboard
@@ -171,6 +177,7 @@ export const ApplicationDashboardPage: FC<Props> = props => {
                 data.listFundingApplications &&
                 data.listFundingApplications.items
             }
+            newApplication={applications}
         />
     );
 };

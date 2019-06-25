@@ -48,7 +48,9 @@ export const ApplicationContainerTimeline = styled.div`
 `;
 
 interface Props extends RouteComponentProps {
+    //  applications: FundingApplications | null[] | never[] | undefined;
     applications?: FundingApplications | null;
+    newApplication?: FundingApplication | null;
     loading?: boolean;
     error?: ApolloError;
 }
@@ -121,11 +123,20 @@ const renderApplications = (applications: FundingApplications) => (
 const renderNoApplications = () => <P>You do not have any applications</P>;
 
 export const ApplicationDashboard: FC<Props> = ({
+    newApplication,
     applications,
     loading,
     error
 }) => {
     const applicationCount = (applications && applications.length) || 0;
+
+    if (
+        applications &&
+        newApplication &&
+        applications.indexOf(newApplication) === -1
+    ) {
+        applications.push(newApplication);
+    }
 
     return (
         <>
