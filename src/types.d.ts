@@ -34,7 +34,7 @@ export interface OpportunityWithApplication {
 export type FundingApplications = Array<FundingApplication | null>;
 
 export interface FundingApplication {
-    id: string;
+    id?: string;
     ownerName: string | null;
     opportunityName: string!;
     opportunityDescription: string | null;

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState, FormEvent } from "react";
+import React, { FC, useCallback, useState, FormEvent, useEffect } from "react";
 
 import { useFormState } from "react-use-form-state";
 import { RouteComponentProps } from "@reach/router";
@@ -50,22 +50,52 @@ export const Question: FC<Props> = ({
     question,
     updateFundingApplicationQuestion
 }) => {
-    const initialState = {
-        complete: false,
-        applicationCase: ""
-    };
-
     const q = question && question.getFundingApplicationQuestion;
 
-    const [questionForm, setQuestionForm] = useState(initialState);
+    const isComplete = (q && q.complete) || false;
+
+    const defaultAnswer = (q && q.answer) || "";
+
+    const initialState = {
+        complete: isComplete,
+        applicationCase: defaultAnswer
+    };
 
     const [validForm, setValidForm] = useState<boolean>(true);
 
-    const wordLimit = (q && q.wordLimit) || 0;
+    const [answer, setAnswer] = useState(defaultAnswer);
 
-    const [wordsRemaining, setWordsRemaining] = useState(wordLimit);
+    const wordLimit = (q && q.wordLimit) || 100;
+
+    const [wordsRemaining, setWordsRemaining] = useState(
+        wordLimit - answer.length
+    );
 
     const [formState, { textarea, checkbox }] = useFormState(initialState);
+
+    useEffect(() => {
+        setAnswer(defaultAnswer);
+        const newWordsRemaining = wordLimit - defaultAnswer.length;
+        setWordsRemaining(newWordsRemaining);
+    }, [defaultAnswer, wordLimit]);
+
+    const onInputChange = useCallback(
+        async event => {
+            setAnswer(event.target.value);
+
+            if (event.target.value.length <= wordLimit) {
+                const newWordsRemaining = wordLimit - event.target.value.length;
+                setWordsRemaining(newWordsRemaining);
+                setValidForm(true);
+            } else {
+                const newWordsRemaining = wordLimit - event.target.value.length;
+                setWordsRemaining(newWordsRemaining);
+                setValidForm(false);
+                return "Invalid";
+            }
+        },
+        [wordLimit]
+    );
 
     const onSubmit = useCallback(
         async (event: FormEvent) => {
@@ -83,31 +113,15 @@ export const Question: FC<Props> = ({
         ]
     );
 
-    const onInputChange = useCallback(
-        async (event: string) => {
-            const textAreaValue = event;
-            if (textAreaValue.length <= wordLimit) {
-                const newWordsRemaining = wordLimit - event.length;
-                setWordsRemaining(newWordsRemaining);
-                setQuestionForm({
-                    ...questionForm,
-                    applicationCase: textAreaValue
-                });
-                setValidForm(true);
-            } else {
-                const newWordsRemaining = wordLimit - event.length;
-                setWordsRemaining(newWordsRemaining);
-                setValidForm(false);
-                return "Invalid";
-            }
-        },
-        [questionForm, wordLimit]
-    );
+    const applicationId =
+        (q && q.fundingApplication && q.fundingApplication.id) || 0;
 
     return (
         <>
             <Breadcrumbs>
-                <Breadcrumbs.Link href={`/`}>Back</Breadcrumbs.Link>
+                <Breadcrumbs.Link href={`/application/${applicationId}`}>
+                    Back
+                </Breadcrumbs.Link>
             </Breadcrumbs>
 
             <LoadingBox loading={false}>
@@ -127,10 +141,15 @@ export const Question: FC<Props> = ({
                                 Please ensure the text is within the word limit
                             </ErrorText>
                         )}
+
                         <TextArea
+                            mb={3}
+                            input={{
+                                onChange: onInputChange,
+                                value: answer
+                            }}
                             {...textarea({
-                                name: "applicationCase",
-                                validate: onInputChange
+                                name: "applicationCase"
                             })}
                         />
                     </FormGroup>
@@ -139,6 +158,7 @@ export const Question: FC<Props> = ({
 
                     <MarkAsComplete>
                         <Checkbox
+                            checked={isComplete}
                             {...checkbox({
                                 name: "complete"
                             })}
